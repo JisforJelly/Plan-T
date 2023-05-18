@@ -1,0 +1,60 @@
+<template>
+<div>
+  <b-card no-body style="padding: 0px;" class="mt-1">
+    <div class="d-flex flex-column align-items-start justify-content-center mt-2 p-2">
+      <div class="d-flex justify-content-between w-100 mt-1 px-3">
+        <div class="d-flex"> 
+          <p class="m-0"  style="font-size: 1.2rem;">작성자 :
+            <span class="font-weight-bold pt-1" style="text-decoration: underline;">
+              {{ comment.user.name}}
+            </span>
+          </p>
+          <p class="my-0 ml-3 font-italic comment-text-style">
+            {{ comment.createdAt }}
+          </p>
+        </div>
+        <div class="d-flex">
+          <b-button variant="none" @click="deleteComment">
+            <b-icon class="mr-1 font-weight-bold font-red" icon="x-lg" ></b-icon>
+          </b-button>
+        </div>
+      </div>
+      <div class="mt-2 px-3">
+        <p class="text-left">
+          {{ comment.content }}
+        </p>
+      </div>
+    </div>
+  </b-card>
+</div>
+</template>
+
+<script>
+export default {
+    name: 'TheComment',
+    props: {
+      comment: Object,
+    },
+    components: {},
+    data() {
+        return {
+        };
+    },
+    setup() { },
+    created() { },
+    mounted() { },
+    unmounted() { },
+    methods: {
+      deleteComment() {
+          this.$emit('deleteComment', this.comment.commentId);
+      },
+    }
+}
+</script>
+
+<style scoped>
+.comment-text-style {
+  font-size: 0.8rem;
+  padding-top: 0.3rem;
+}
+</style>
