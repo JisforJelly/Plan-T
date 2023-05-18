@@ -1,31 +1,29 @@
 <template>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="d-flex flex-column h-100 sticky-top"
-            style="padding: 20px 300px; margin-top: 60px; min-width: 1100px !important;">
+        <div class="header d-flex flex-column h-100 sticky-top">
             <div>
                 <h2 class="font-weight-bold mb-0 w-auto"> 게시글 목록 </h2>
             </div>
-
-            <div class="d-flex align-items-center justify-content-between" style="margin-top: 60px;">
+            <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
-                    <b-button style="white-space:nowrap;" @click="movePostRegist">게시글 등록</b-button>
+                    <b-button class="button" @click="movePostRegist">게시글 등록</b-button>
                 </div>
                 <div class="d-flex flex-grow-1 align-items-center justify-content-end">
                     <b-form-select class="w-auto mr-1" v-model="selected" :options="options"></b-form-select>
                     <b-form-input class="w-auto mr-1" placeholder="검색어를 입력해주세요." v-model="searchParams"></b-form-input>
-                    <b-button class="w-auto" style="white-space:nowrap;" @click="searchRender">검색</b-button>
+                    <b-button class="button w-auto" @click="searchRender">검색</b-button>
                 </div>
             </div>
         </div>
 
         <!-- Board Section -->
-        <div style="padding: 20px 300px; margin-top:20px; min-width: 1100px !important;">
+        <div class="board-section">
             <b-table hover :items="items" @row-clicked="onRowClicked" />
         </div>
 
         <!-- Page nation -->
-        <div class="d-flex justify-content-center" style="height: 100px; margin-bottom: 220px;">
+        <div class="page-nation d-flex justify-content-center">
             <b-pagination-nav class="mt-2 w-auto" size="lg" @page-click="pageClick" :current-page="currentPage"
                 :number-of-pages="totalPage" base-url="#"></b-pagination-nav>
         </div>
@@ -116,4 +114,25 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.header {
+    padding: 20px 300px;
+    margin-top: 60px;
+    min-width: 1100px !important;
+}
+.board-content {
+    margin-top: 60px; 
+}
+.button {
+    white-space: nowrap;
+}
+.board-section {
+    padding: 20px 300px;
+    margin-top:20px;
+    min-width: 1100px !important;
+}
+.page-nation {
+    height: 100px;
+    margin-bottom: 220px;
+}
+</style>

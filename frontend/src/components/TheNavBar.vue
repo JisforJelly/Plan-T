@@ -3,7 +3,7 @@
         <header>
             <div class="d-flex navbar-static-height">
                 <div class="d-flex h-100 align-items-center">
-                    <img style="width:auto; height: 80%;" src="@/assets/EnjoyTrip.png" />
+                    <img class="logo" src="@/assets/EnjoyTrip.png" />
                 </div>
 
                 <div class="d-flex flex-grow-1 h-100 ml-2 align-items-center p-5">
@@ -39,7 +39,6 @@
                             </div>
                         </template>
                         <!-- select option -->
-
                         <b-dropdown-item-button @click="$bvModal.show('userModal')" v-for="item in beforeLoginUserDropDown"
                             :key="item.mkey" aria-describedby="dropdown-header-label" v-bind:value="item.value">
                             {{ item.text }}
@@ -211,12 +210,14 @@ export default {
     height: 102px;
     padding: 0px 300px;
 }
-
 .simple-text-style {
     color: black;
     font-size: 1.5rem;
     background-color: white;
     font-weight: bolder;
+}
+.logo {
+    width:auto; height: 80%;
 }
 </style>
 
@@ -224,7 +225,6 @@ export default {
 .userModalBody {
     padding: 1.2rem 1rem 0rem 1rem;
 }
-
 .userModalFooter {
     padding: 0rem 1rem 1rem 0.7rem;
 }
