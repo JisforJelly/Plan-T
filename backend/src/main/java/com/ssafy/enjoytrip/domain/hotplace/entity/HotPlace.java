@@ -1,12 +1,17 @@
 package com.ssafy.enjoytrip.domain.hotplace.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.ssafy.enjoytrip.domain.user.entity.User;
 import com.ssafy.enjoytrip.global.BaseEntity;
@@ -29,7 +34,7 @@ public class HotPlace extends BaseEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer hotPlaceId;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	private User user;
 	
@@ -37,7 +42,7 @@ public class HotPlace extends BaseEntity {
 	private String title;
 	
 	@Column(name = "connent")
-	private String connent;
+	private String content;
 	
 	@Column(name = "location")
 	private String location;
@@ -53,4 +58,32 @@ public class HotPlace extends BaseEntity {
 	
 	@Column(name = "contentType")
 	private String contentType;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="hotplace", cascade= { CascadeType.REMOVE, CascadeType.PERSIST })
+	private List<HotPlaceImage> images;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="hotplace", cascade=CascadeType.REMOVE)
+	private List<HotPlaceLike> likes;
+	
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+	
+	public void updateContent(String content) {
+		this.content = content;
+	}
+	
+	public void updateLocationInfo(String location, Double latitude, Double longitude) {
+		this.location = location;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+	
+	public void updateHashTag(String hashTag) {
+		this.hashTag = hashTag;
+	}
+	
+	public void updateContentType(String contentType) {
+		this.contentType = contentType;
+	}
 }

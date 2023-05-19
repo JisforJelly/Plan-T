@@ -38,7 +38,7 @@ public class PostController {
 	}
 	
 	@GetMapping("/{postId}")
-	public ResponseEntity<PostDetail> getPosts(@PathVariable Integer postId) {
+	public ResponseEntity<PostDetail> getPostDetail(@PathVariable Integer postId) {
 		return new ResponseEntity<PostDetail>(postService.getPost(postId), HttpStatus.OK);
 	}
 	

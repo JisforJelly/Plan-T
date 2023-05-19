@@ -2,9 +2,12 @@ package com.ssafy.enjoytrip.domain.hotplace.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +28,7 @@ public class HotPlaceImage {
 	@Column(name = "imagePath")
 	private String imagePath;
 	
-	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="hotPlaceId")
+	private HotPlace hotplace;
 }
