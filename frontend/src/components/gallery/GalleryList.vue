@@ -1,8 +1,8 @@
 <template>
     <div class="container-fluid p-0">
         <!-- main content-->
-        <div class="d-flex" style="padding: 0px 300px; margin-top:80px">
-            <b-row class="w-100" style="padding-bottom: 200px;">
+        <div class="main-content d-flex" >
+            <b-row class="w-100">
                 <!-- width height 1: ? 비율 유지되야함 -->
                 <HotPlaceItem  v-for="i in 50" :key=i />
             </b-row>
@@ -39,5 +39,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.main-content {
+    padding: 0px 300px;
+    margin-top:80px
+}
+b-row {
+    padding-bottom: 200px;
+}
 </style>

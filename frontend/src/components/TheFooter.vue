@@ -35,7 +35,6 @@ export default {
     padding: 0px 300px;
     font-size: 1rem;
 }
-
 .footer-layer-2 {
     background-color: black;
     height: 67px;

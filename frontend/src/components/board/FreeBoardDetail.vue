@@ -1,43 +1,42 @@
 <template>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="d-flex flex-column h-100"
-            style="padding: 20px 300px; min-width: 1100px !important;">
+        <div class="header d-flex flex-column h-100">
             <div>
                 <h2 class="font-weight-bold mb-0 w-auto"> QNA 조회 </h2>
             </div>
-            <div class="d-flex align-items-center justify-content-between" style="margin-top: 60px;">
+            <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
-                    <b-button class="mr-2" style="white-space:nowrap;" @click="movePostList">목록</b-button>
-                    <b-button class="mr-2" style="white-space:nowrap;" @click="modifyPost">게시글 수정</b-button>
-                    <b-button class="btn-danger" style="white-space:nowrap;" @click="deletePost">게시글 삭제</b-button>
+                    <b-button class="button mr-2" @click="movePostList">목록</b-button>
+                    <b-button class="button mr-2" @click="modifyPost">게시글 수정</b-button>
+                    <b-button class="button btn-danger" @click="deletePost">게시글 삭제</b-button>
                 </div>
             </div>
         </div>
 
         <!-- Board Section -->
-        <div style="padding: 20px 300px; height: 2000px; min-width: 1100px !important;">
+        <div class="board-section">
             <b-form-input size="lg" v-model="post.title" class="mb-2" readonly></b-form-input>
             <div class="d-flex align-items-center mt-1">                
-                <p class="m-0"  style="font-size: 1.2rem;">작성자 :
-                    <span class="font-weight-bold pt-1" style="text-decoration: underline;">
+                <p class="writer m-0" >작성자 :
+                    <span class="name font-weight-bold pt-1">
                             {{ post.name }}
                     </span>
                 </p>
-                <p class="my-0 ml-3 font-italic" style="font-size: 1.1rem;">
+                <p class="time my-0 ml-3 font-italic" >
                     {{ post.createdAt }}
                 </p>
             </div>
             <VueEditor class="mt-2" v-model="post.content" :editorToolbar="customToolbar" :disabled="readOnly"></VueEditor>
 
-            <!-- 덧글 표시 영역 -->
+            <!-- 댓글 표시 영역 -->
             <TheComment :comment="comment" v-for="comment in comments" :key="comment.commentId" v-on:deleteComment="deleteComment"/>
             
-            <!-- 덧글 등록 form-->
+            <!-- 댓글 등록 form-->
             <div class="mt-1 d-flex flex-column">
                 <b-form-textarea v-model="commentInsertForm" placeholder="Enter something..."></b-form-textarea>
                 <div class="d-flex mt-1  flex-row-reverse">
-                    <b-button style="white-space:nowrap;"  @click="pushComment">덧글 등록</b-button>
+                    <b-button class="button" @click="pushComment">댓글 등록</b-button>
                 </div>
             </div>
         </div>
@@ -126,6 +125,30 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.header {
+    padding: 20px 300px;
+    margin-top: 60px;
+    min-width: 1100px !important;
+}
+.board-section {
+    padding: 20px 300px;
+    height: 2000px;
+    min-width: 1100px !important;
+}
+.board-content {
+    margin-top: 60px;
+}
+.button {
+    white-space: nowrap;
+}
+.writer {
+    font-size: 1.2rem;
+}
+.name {
+    text-decoration: underline;
+}
+.time {
+    font-size: 1.1rem;
+}
 </style>

@@ -23,7 +23,7 @@
 
         <div class="d-flex flex-column justify-content-start">
             <router-link :to="{name: 'GalleryDetail'}">
-                <p class="text-truncate fw-bolder mt-2 mb-1" align="left" style="font-weight:bolder; font-size: 1.1rem; ">핫플레이스명</p>
+                <p class="hotplace-name text-truncate fw-bolder mt-2 mb-1" align="left">핫플레이스명</p>
                 <p class="fw-bolder hotplace-content m-0" align="left">핫플레이스 설명입니다. 핫플레이스 설명입니다. 핫플레이스 설명입니다. 핫플레이스 설명입니다. 핫플레이스 설명입니다. 핫플레이스 설명입니다. </p>
             </router-link>
             <div class="d-flex align-items-center justify-content-between mt-2">
@@ -60,6 +60,10 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+.hotplace-name {
+    font-weight: bolder;
+    font-size: 1.1rem;
+}
 </style>
 
 <style>
@@ -68,5 +72,4 @@ export default {
     background-color: rgba(0,0,0,0);
     overflow: hidden;
 }
-
 </style>
