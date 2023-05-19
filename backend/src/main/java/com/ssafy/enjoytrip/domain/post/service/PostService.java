@@ -41,7 +41,6 @@ public class PostService {
 		checkPostOwnerByUserId(post, userId);
 		post.updateTitle(dto.getTitle());
 		post.updateContent(dto.getContent());
-		System.out.println("테스트 테스트 " + dto.getTitle() + " " + dto.getContent());
 	}
 
 	@Transactional(readOnly=true)
