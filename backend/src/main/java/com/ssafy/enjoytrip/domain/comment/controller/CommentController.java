@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.domain.comment.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.domain.comment.dto.CommentDto;
-import com.ssafy.enjoytrip.domain.comment.entity.Comment;
+import com.ssafy.enjoytrip.domain.comment.dto.CommentDto.CommentListView;
 import com.ssafy.enjoytrip.domain.comment.service.CommentService;
 import com.ssafy.enjoytrip.domain.user.dto.UserDto.AuthInfo;
 import com.ssafy.enjoytrip.global.validation.TokenVallidator;
@@ -29,13 +27,13 @@ public class CommentController {
 	
 	private final CommentService commentService;
 	@GetMapping("")
-	public ResponseEntity<List<Comment>> getComments(@RequestParam Integer postId) {
+	public ResponseEntity<CommentListView> getComments(@RequestParam Integer postId) {
 		return new ResponseEntity<>(commentService.findByPostId(postId), HttpStatus.OK);
 	}
 
 	
 	@PostMapping("")
-	public ResponseEntity<Void> insertComment(@TokenVallidator AuthInfo authInfo, @RequestBody CommentDto dto) {
+	public ResponseEntity<Void> insertComment(@TokenVallidator AuthInfo authInfo, @RequestBody CommentDto.EditRequest dto) {
 		commentService.insertComment(dto, authInfo.getUserId());
 		return ResponseEntity.ok().build();
 	}
@@ -47,7 +45,7 @@ public class CommentController {
 	}
 	
 	@PutMapping("/{commentId}")
-	public ResponseEntity<Void> updateComment(@TokenVallidator AuthInfo authInfo, @PathVariable Integer commentId, @RequestBody CommentDto dto) {
+	public ResponseEntity<Void> updateComment(@TokenVallidator AuthInfo authInfo, @PathVariable Integer commentId, @RequestBody CommentDto.EditRequest dto) {
 		commentService.updateComment(authInfo.getUserId(), commentId, dto);
 		return ResponseEntity.ok().build();
 	}

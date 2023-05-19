@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.domain.comment.dto.CommentDto;
+import com.ssafy.enjoytrip.domain.comment.dto.CommentDto.CommentListView;
 import com.ssafy.enjoytrip.domain.comment.entity.Comment;
 import com.ssafy.enjoytrip.domain.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.domain.post.repository.PostRepository;
@@ -20,11 +21,14 @@ public class CommentService {
 	private final PostRepository postRepository;
 	private final CommentRepository commentRepository;
 
-	public List<Comment> findByPostId(Integer postId) {
-		return commentRepository.findByPost(postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException()));
+	public CommentListView findByPostId(Integer postId) {
+		List<Comment> comments = commentRepository
+				.findByPost(postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException()));
+		
+		return CommentListView.ofList(comments);
 	}
 
-	public void insertComment(CommentDto dto, Integer userId) {
+	public void insertComment(CommentDto.EditRequest dto, Integer userId) {
 		Comment comment = Comment.builder()
 				.content(dto.getContent())
 				.post(postRepository.findById(dto.getPostId()).orElseThrow(()->new IllegalArgumentException()))
@@ -38,7 +42,7 @@ public class CommentService {
 		commentRepository.deleteById(commentId);
 	}
 	
-	public void updateComment(Integer userId, Integer commentId, CommentDto dto) {
+	public void updateComment(Integer userId, Integer commentId, CommentDto.EditRequest dto) {
 		Comment comment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException());
 		comment.updateContent(dto.getContent());
 		commentRepository.save(comment);
