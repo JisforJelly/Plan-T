@@ -19,3 +19,23 @@
 - Hotplace database 설계 및 기본 CRUD 작성
 - Trip Plan database 설계(1)
 ```
+
+
+```
+2023-05-19 금요일 작업 일정
+
+[공통]
+-
+
+[FE]
+---
+- Logo 교체 작업(1)
+- Hot Place 등록페이지 화면 작성(1)
+- 덧글 UI 개선 (입력창이 위로, 카드 UI 적용) + 덧글 리스트가 밑으로 가게 수정
+- 게시글 UI 개선 
+
+---
+[BE] 
+- HotPlace dto 설계, 기본 crud 작성 
+- Trip Place database 설계(2)
+```
