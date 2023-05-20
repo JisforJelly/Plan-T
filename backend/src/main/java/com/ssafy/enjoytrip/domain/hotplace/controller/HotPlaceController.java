@@ -1,20 +1,18 @@
 package com.ssafy.enjoytrip.domain.hotplace.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.enjoytrip.global.util.FileUploadUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto.EditRequest;
@@ -32,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class HotPlaceController {
 
 	private final HotPlaceService hotPlaceService;
+	private final FileUploadUtil fileUploadUtil;
 	
 	@GetMapping("")
 	public ResponseEntity<HotPlaceListView> getHotPlaces(@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
@@ -49,14 +48,20 @@ public class HotPlaceController {
 		return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("")
+	@PostMapping(path="", consumes = {"multipart/form-data"})
 	public ResponseEntity<Void> saveHotPlace(
-			@TokenVallidator AuthInfo authInfo, 
-			@RequestPart EditRequest dto,
-			@RequestPart(value="image") List<MultipartFile> images) {
-		
-		// TODO Save Image and get Image Path 
-		hotPlaceService.insertHotPlace(dto, authInfo.getUserId());
+			@TokenVallidator AuthInfo authInfo,
+			@RequestParam String dto,
+			@RequestPart(value="image") List<MultipartFile> images) throws IOException {
+
+		ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		EditRequest editDto = objectMapper.readValue(dto, EditRequest.class);
+
+		for(MultipartFile img: images) {
+			String path = fileUploadUtil.saveImage(img);
+			editDto.getImgPaths().add(path);
+		}
+		hotPlaceService.insertHotPlace(editDto, authInfo.getUserId());
 		return ResponseEntity.ok().build();
 	}
 	

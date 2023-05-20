@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.domain.hotplace.dto;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,6 +111,6 @@ public class HotPlaceDto {
 		private Double longitude;
 		private String hashTag;
 		private String contentType;
-		private List<String> imgPaths;
+		private List<String> imgPaths = new LinkedList<>();
 	}
 }
