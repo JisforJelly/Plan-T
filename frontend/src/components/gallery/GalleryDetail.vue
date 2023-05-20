@@ -23,7 +23,7 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <KaKaoMap />
+                <KaKaoMap :mapCss="mapStyle"/>
                 <b-carousel :interval="0" controls indicators background="#ababab" class="rounded w-50">
                     <b-carousel-slide>
                         <template #img>
@@ -83,7 +83,12 @@ export default {
                 createdAt: "2023-05-12",
                 location: "서울시 노원구 상계동 주공아파트",
                 content: "핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용",
-            }
+            },
+            mapStyle : {
+                'display': 'table',
+                'width': '49%',
+                'height': '560px',
+            },
         };
     },
     setup() { },

@@ -1,23 +1,29 @@
 <template>
-    <div id="map"></div>
+    <div id="map" :style="mapStyle"></div>
 </template>
 <script>
 export default {
     name:'KakaoMap',
     components:{},
+    props: {
+        mapCss: Object,
+    },
     data() {
         return {
             map: null,
         };
     },
-    setup() {},
-    created() {},
     mounted() {
         this.drawMap();
     },
-    unmounted() {},
+    computed: {
+        mapStyle() {
+            return this.mapCss;
+        }
+    },
     methods: {
         drawMap() { 
+            console.log(window.kakao)
             const container = document.getElementById('map');
             const options = {
                 center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -31,9 +37,5 @@ export default {
 </script>
 
 <style scoped>
-#map {
-    display: table;
-    width: 49%;
-    height: 560px;
-}
+
 </style>

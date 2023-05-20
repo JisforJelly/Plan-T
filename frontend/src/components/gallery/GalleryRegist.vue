@@ -8,7 +8,7 @@
             <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
                     <b-button class="button mr-2" @click="moveGalleryList">목록</b-button>
-                    <b-button class="button" @click="insertGallery">핫플레이스 등록</b-button>
+                    <b-button class="button">핫플레이스 등록</b-button>
                 </div>
             </div>
         </div>
@@ -19,6 +19,29 @@
             <b-form-input size="lg" placeholder="제목" class="mb-2"></b-form-input>
             <!-- 해시태그 -->
             <b-form-input size="lg" placeholder="#해시태그" class="mb-2"></b-form-input>
+
+           <div class="d-flex justify-content-between mb-2">
+                <KaKaoMap :mapCss="mapStyle"/>
+                <b-carousel :interval="0" controls indicators background="#ababab" class="rounded w-50">
+                    <b-carousel-slide>
+                        <template #img>
+                            <img
+                                class="d-block img-fluid w-100"
+                                src="http://localhost:8080/assets/img/gallery/gallery-1.jpg"
+                                alt="image slot">
+                        </template>
+                    </b-carousel-slide>
+                    <b-carousel-slide>
+                        <template #img>
+                            <img
+                                class="d-block img-fluid w-100"
+                                src="http://localhost:8080/assets/img/gallery/gallery-2.jpg"
+                                alt="image slot">
+                        </template>
+                    </b-carousel-slide>
+                </b-carousel>
+            </div>
+
             <!-- 주소 -->
             <b-input-group>
                 <b-form-input size="lg" disabledtype="text" placeholder="주소"></b-form-input>
@@ -26,36 +49,36 @@
                     <b-button class="address-button" size="lg">주소 검색</b-button>
                 </b-input-group-append>
             </b-input-group>
-            <div id="map"></div>
             <!-- 사진(여러개 업로드 가능하게...) -->
             <b-form-group>
                 <b-form-file multiple
-                class="upload"
-                size="lg"
-                accept="image/*"
-                placeholder="파일을 선택하세요"
-                browse-text="파일 선택"
+                    class="upload"
+                    size="lg"
+                    accept="image/*"
+                    placeholder="파일을 선택하세요"
+                    browse-text="파일 선택"
                 ></b-form-file>
             </b-form-group>
             <!-- 상세 설명 -->
-            <VueEditor :editorToolbar="customToolbar"></VueEditor>
-            </div>
-            <!-- Board Section End -->
         </div>
+    </div>
 </template>
 <script>
-// import { VueDaumPostcode } from "vue-daum-postcode"
-import { VueEditor } from "vue2-editor";
+import KaKaoMap from "@/components/map/KakaoMap.vue"
 
 export default {
     name:'GalleryRegist',
     components:{
-        VueEditor,
-        // VueDaumPostcode,
+        KaKaoMap
     },
     data() {
         return {
-      }
+            mapStyle : {
+                'display': 'table',
+                'width': '49%',
+                'height': '300px',
+            }
+        }
     },
     setup() {},
     created() {},
@@ -84,12 +107,6 @@ export default {
 .board-content {
     margin-top: 60px;
 }
-#map {
-    width:300px;
-    height:300px;
-    margin-top:10px;
-    display:none;
-}
 .upload {
     margin-top: 10px;
     text-align: left;
@@ -103,5 +120,10 @@ export default {
     color: #495057;
     background-color: #ced4da;
     border: 1px solid #ced4da;
+}
+img {
+    overflow-x: hidden;
+    height: 300px !important;
+    object-fit: cover !important;
 }
 </style>
