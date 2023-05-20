@@ -18,14 +18,21 @@
         </div>
 
         <!-- Board Section -->
-        <div class="board-section">
-            <b-table hover :items="items" @row-clicked="onRowClicked" />
+        <div v-if="items.length">
+            <div class="board-section">
+                <b-table hover :items="items" @row-clicked="onRowClicked" />
+            </div>
+            <!-- Page nation -->
+            <div class="page-nation d-flex justify-content-center">
+                <b-pagination-nav class="mt-2 w-auto" size="lg" @page-click="pageClick" :current-page="currentPage"
+                    :number-of-pages="totalPage" base-url="#"></b-pagination-nav>
+            </div>
         </div>
 
-        <!-- Page nation -->
-        <div class="page-nation d-flex justify-content-center">
-            <b-pagination-nav class="mt-2 w-auto" size="lg" @page-click="pageClick" :current-page="currentPage"
-                :number-of-pages="totalPage" base-url="#"></b-pagination-nav>
+        <div v-else>
+            <div class="noboard">
+                <h3>게시글이 없습니다.</h3>
+            </div>
         </div>
     </div>
 </template>
@@ -134,5 +141,9 @@ export default {
 .page-nation {
     height: 100px;
     margin-bottom: 220px;
+}
+.noboard {
+    margin-top: 50px;
+    color: lightslategray;
 }
 </style>

@@ -57,7 +57,7 @@ async function modifyPost(post, success) {
     .put(`/posts`, JSON.stringify(post))
     .then(success)
     .catch((e) => {
-      alert("게시글 수정에 실패했습니다. 관리자메에 문의하세요.");
+      alert("게시글 수정에 실패했습니다. 관리자에게 문의하세요.");
       console.log(e);
     });
 }
