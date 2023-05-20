@@ -31,9 +31,9 @@ export default {
 </script>
 
 <style scoped>
-    #map {
-        display: table;
-        width: 49%;
-        height: 560px;
-    }
+#map {
+    display: table;
+    width: 49%;
+    height: 560px;
+}
 </style>

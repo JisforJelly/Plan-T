@@ -16,29 +16,38 @@
 
         <!-- Board Section -->
         <div class="board-section">
-            <b-form-input size="lg" v-model="post.title" class="mb-2" readonly></b-form-input>
-            <div class="d-flex align-items-center mt-1">                
-                <p class="writer m-0" >작성자 :
-                    <span class="name font-weight-bold pt-1">
-                            {{ post.name }}
-                    </span>
-                </p>
-                <p class="time my-0 ml-3 font-italic" >
-                    {{ post.createdAt }}
-                </p>
-            </div>
-            <VueEditor class="mt-2" v-model="post.content" :editorToolbar="customToolbar" :disabled="readOnly"></VueEditor>
+            <!-- 게시글 표시 영역 -->
+            <b-card bg-variant="light" no-body class="post-area" >
+                <b-card class="content">
+                    <p v-html="post.title" align="left" class="post-title" ></p>
+                    
+                    <div class="information d-flex flex-row-reverse align-items-center mt-1">                
+                        <p class="time my-0 ml-3 font-italic" >
+                            {{ post.createdAt }}
+                        </p>
+                        <p class="writer m-0" >작성자 :
+                            <span class="name font-weight-bold pt-1">
+                                    {{ post.name }}
+                            </span>
+                        </p>
+                    </div>
+                    <p v-html="post.content" align="left" class="post-content"></p>
+                </b-card>
+            </b-card>
+
+            <!-- 댓글 등록 form-->
+            <b-card bg-variant="light" class="comment">
+                <div class="mt-1 d-flex flex-column">
+                    <b-form-textarea v-model="commentInsertForm" placeholder="댓글을 입력하세요"></b-form-textarea>
+                    <div class="d-flex mt-1  flex-row-reverse">
+                        <b-button class="button" @click="pushComment">댓글 등록</b-button>
+                    </div>
+                </div>
+            </b-card>
 
             <!-- 댓글 표시 영역 -->
             <TheComment :comment="comment" v-for="comment in comments" :key="comment.commentId" v-on:deleteComment="deleteComment"/>
             
-            <!-- 댓글 등록 form-->
-            <div class="mt-1 d-flex flex-column">
-                <b-form-textarea v-model="commentInsertForm" placeholder="Enter something..."></b-form-textarea>
-                <div class="d-flex mt-1  flex-row-reverse">
-                    <b-button class="button" @click="pushComment">댓글 등록</b-button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -48,12 +57,12 @@
 import { getPostByPostId, deletePost } from "@/api/post"
 import { getComments, insertComment, deleteComment } from "@/api/comment"
 import TheComment from "@/components/comment/TheComment.vue"
-import { VueEditor } from "vue2-editor";
+// import { VueEditor } from "vue2-editor";
 
 export default {
     name:'FreeBoardDetail',
     components: {
-        VueEditor,
+        // VueEditor,
         TheComment,
     },
     data() {
@@ -90,7 +99,7 @@ export default {
             });
 
             await getComments(this.postId, (response)=>{
-                this.comments = response.data;
+                this.comments = response.data; // 수정
             });
         },
         movePostList() { 
@@ -100,9 +109,11 @@ export default {
             this.$router.push({ name: "FreeBoardModify", params: { 'no': this.postId } }).catch(() => { });
         },
         deletePost() { 
-            deletePost(this.postId, () => {
-                this.$router.push({ name: "FreeBoard" }).catch(() => { });
-            });
+            if(confirm("정말 삭제하시겠습니까?")) {
+                deletePost(this.postId, () => {
+                    this.$router.push({ name: "FreeBoard" }).catch(() => { });
+                });
+            }
         },
         pushComment() {
             if(!this.commentInsertForm) {
@@ -114,12 +125,15 @@ export default {
                 content: this.commentInsertForm,
             }, ()=>{
                 this.renderPost();
+                this.commentInsertForm = "";
             });
         },
         deleteComment(commentId) {
-            deleteComment(commentId, ()=>{
-                this.renderPost();
-            })
+            if(confirm("정말 삭제하시겠습니까?")) {
+                deleteComment(commentId, ()=>{
+                    this.renderPost();
+                })
+            }
         }
     }
 }
@@ -139,16 +153,38 @@ export default {
 .board-content {
     margin-top: 60px;
 }
+.content {
+    border:none;
+}
+.information {
+     border-bottom: 1px solid #e3e7eb;
+     padding-bottom: 10px;
+}
+.post-content {
+    padding: 20px 20px;
+}
+.post-title {
+    padding: 20px 20px;
+    background-color:white;
+    font-size: 20px;
+    border-bottom: 1px solid #e3e7eb;
+}
+.post-area {
+    padding: 20px;
+}
 .button {
     white-space: nowrap;
 }
 .writer {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
 }
 .name {
     text-decoration: underline;
 }
 .time {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
+}
+.comment {
+    margin-top: 10px;
 }
 </style>

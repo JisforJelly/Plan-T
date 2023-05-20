@@ -1,15 +1,16 @@
 <template>
-<div>
-  <b-card no-body class="mt-1">
+<div class="single-comment">
+  <b-card no-body class="card mt-1">
     <div class="d-flex flex-column align-items-start justify-content-center mt-2 p-2">
       <div class="d-flex justify-content-between w-100 mt-1 px-3">
         <div class="d-flex"> 
-          <p class="m-0" >작성자 :
-            <span class="font-weight-bold pt-1" >
-              {{ comment.user.name}}
+          <p class="writer m-0" >작성자 :
+            <span class="name font-weight-bold pt-1" >
+              <!-- 수정 -->
+              {{ comment.user.name }} 
             </span>
           </p>
-          <p class="my-0 ml-3 font-italic" >
+          <p class="time my-0 ml-3 font-italic" >
             {{ comment.createdAt }}
           </p>
         </div>
@@ -53,6 +54,9 @@ export default {
 </script>
 
 <style scoped>
+.single-comment {
+  margin-top: 10px;
+}
 .card {
   padding: 0px;
 }
