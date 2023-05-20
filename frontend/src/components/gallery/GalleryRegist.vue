@@ -73,6 +73,7 @@
     </div>
 </template>
 <script>
+import { getContent } from "@/api/meta"
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { openDaumPost, getLatLng } from "@/util/daumPostUtil";
 
@@ -99,17 +100,29 @@ export default {
                 contentType: null,
                 imgPath: [],
             },
-            options: [
-                { value: null, text: '관광지 타입을 설정하세요.', disabled: true },
-                { value: 'd', text: 'Please select an option' },
-                { value: 'a', text: 'This is First option' },
-                { value: 'b', text: 'Selected Option' },
-                { value: { C: '3PO' }, text: 'This is an option with object value' },
-            ]
+            options: [],
+            defaultOptions: {
+                value : null,
+                text: "장소 타입을 선택하세요.",
+                disabled: true
+            }
         }
     },
     setup() {},
-    created() {},
+    created() {
+        getContent((response)=>{
+            if(response.data) {
+                const option = response.data.map((code)=>{
+                    return {
+                        value: code.name,
+                        text: code.name,
+                    }
+                });
+
+                this.options = [this.defaultOptions, ...option];
+            }
+        });
+    },
     mounted() {},
     unmounted() {},
     methods:{
