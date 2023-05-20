@@ -8,7 +8,7 @@
             <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
                     <b-button class="button mr-2" @click="moveGalleryList">목록</b-button>
-                    <b-button class="button">핫플레이스 등록</b-button>
+                    <b-button class="button" @click="registHotPlace">핫플레이스 등록</b-button>
                 </div>
             </div>
         </div>
@@ -60,6 +60,7 @@
                     accept="image/*"
                     placeholder="파일을 선택하세요"
                     browse-text="파일 선택"
+                    v-model="uploadedImg"
                 ></b-form-file>
             </b-form-group>
             <!-- 상세 설명 -->
@@ -74,6 +75,7 @@
 </template>
 <script>
 import { getContent } from "@/api/meta"
+import { insertHotPlace } from "@/api/hotplace"
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { openDaumPost, getLatLng } from "@/util/daumPostUtil";
 
@@ -100,6 +102,7 @@ export default {
                 contentType: null,
                 imgPath: [],
             },
+            uploadedImg: [],
             options: [],
             defaultOptions: {
                 value : null,
@@ -129,7 +132,16 @@ export default {
         moveGalleryList() { 
             this.$router.push({ name: "GalleryList" }).catch(() => { });
         },
+        registHotPlace() {
+            if(!this.hotplaceForm.location) {
+                alert("주소를 선택해주세요.");
+                return;
+            }
 
+            insertHotPlace(this.getRequestFormData(), (response)=>{
+                console.log(response.data);
+            });
+        },
         openAddressSearch() {
             openDaumPost((address)=>{
                 this.hotplaceForm.location = address;
@@ -137,6 +149,15 @@ export default {
                 this.hotplaceForm.latitude = loc.latitude;
                 this.hotplaceForm.longitude = loc.longitude;
             });
+        },
+        getRequestFormData() {
+            const formData = new FormData();
+
+            formData.append("dto", JSON.stringify(this.hotplaceForm))
+            this.uploadedImg.forEach(img=>{
+                formData.append("image", img);
+            })
+            return formData;
         }
     }
 }
