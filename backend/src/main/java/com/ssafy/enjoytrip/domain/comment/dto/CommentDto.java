@@ -40,7 +40,7 @@ public class CommentDto {
     @Data
     @Builder
     public static class CommentItem {
-    	private Integer commentId
+    	private Integer commentId;
         private Integer postId;
         private String name;
         private String content;
