@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="header d-flex flex-column h-100">
+        <div class="header d-flex flex-column h-100 sticky-top">
             <div>
                 <h2 class="font-weight-bold mb-0 w-auto"> 핫플레이스 등록 </h2>
             </div>
@@ -16,9 +16,9 @@
         <!-- Board Section -->
         <div class="board-section">
             <!-- 제목 -->
-            <b-form-input size="lg" placeholder="제목" class="mb-2"></b-form-input>
+            <b-form-input size="lg" placeholder="제목" class="mb-2" v-model="hotplaceForm.title"></b-form-input>
             <!-- 해시태그 -->
-            <b-form-input size="lg" placeholder="#해시태그" class="mb-2"></b-form-input>
+            <b-form-input size="lg" placeholder="#해시태그" class="mb-2" v-model="hotplaceForm.hashTag"></b-form-input>
 
            <div class="d-flex justify-content-between mb-2">
                 <KaKaoMap :mapCss="mapStyle"/>
@@ -44,11 +44,14 @@
 
             <!-- 주소 -->
             <b-input-group>
-                <b-form-input size="lg" disabledtype="text" placeholder="주소"></b-form-input>
+                <b-form-input size="lg" v-model="hotplaceForm.location" disabledtype="text" placeholder="주소" readonly></b-form-input>
                 <b-input-group-append>
-                    <b-button class="address-button" size="lg">주소 검색</b-button>
+                    <b-button class="address-button" size="lg" @click="openAddressSearch">주소 검색</b-button>
                 </b-input-group-append>
             </b-input-group>
+
+            <b-form-select class="mt-2" size="lg" v-model="hotplaceForm.contentType" :options="options"></b-form-select>
+
             <!-- 사진(여러개 업로드 가능하게...) -->
             <b-form-group>
                 <b-form-file multiple
@@ -60,11 +63,18 @@
                 ></b-form-file>
             </b-form-group>
             <!-- 상세 설명 -->
+            <b-form-textarea
+                placeholder="HotPlace 설명을 작성해주세요."
+                rows="3"
+                max-rows="8"
+                v-model="hotplaceForm.content"
+            ></b-form-textarea>
         </div>
     </div>
 </template>
 <script>
 import KaKaoMap from "@/components/map/KakaoMap.vue"
+import { openDaumPost, getLatLng } from "@/util/daumPostUtil";
 
 export default {
     name:'GalleryRegist',
@@ -77,7 +87,25 @@ export default {
                 'display': 'table',
                 'width': '49%',
                 'height': '300px',
-            }
+            },
+            hotplaceForm: {
+                hotPlaceId: -1,
+                title: "",
+                content: "",
+                location: "",
+                latitude: "",
+                longitude: "",
+                hashTag: "",
+                contentType: null,
+                imgPath: [],
+            },
+            options: [
+                { value: null, text: '관광지 타입을 설정하세요.', disabled: true },
+                { value: 'd', text: 'Please select an option' },
+                { value: 'a', text: 'This is First option' },
+                { value: 'b', text: 'Selected Option' },
+                { value: { C: '3PO' }, text: 'This is an option with object value' },
+            ]
         }
     },
     setup() {},
@@ -88,6 +116,15 @@ export default {
         moveGalleryList() { 
             this.$router.push({ name: "GalleryList" }).catch(() => { });
         },
+
+        openAddressSearch() {
+            openDaumPost((address)=>{
+                this.hotplaceForm.location = address;
+                const loc = getLatLng();
+                this.hotplaceForm.latitude = loc.latitude;
+                this.hotplaceForm.longitude = loc.longitude;
+            });
+        }
     }
 }
 </script>
@@ -99,7 +136,7 @@ export default {
     min-width: 1100px !important;
 }
 .board-section {
-    padding: 20px 300px;
+    padding: 20px 300px 1000px 300px;
     overflow: hidden;
     height: 800px;
     min-width: 1100px !important;
