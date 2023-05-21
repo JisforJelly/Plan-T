@@ -86,4 +86,8 @@ public class HotPlace extends BaseEntity {
 	public void updateContentType(String contentType) {
 		this.contentType = contentType;
 	}
+
+	public void setImages(List<HotPlaceImage> images) {
+		this.images = images;
+	}
 }

@@ -24,13 +24,9 @@ public class HotPlaceService {
 	private final UserRepository userRepository;
 	
 	public void insertHotPlace(EditRequest dto, Integer userId) {
-		List<HotPlaceImage> paths = dto.getImgPaths().stream().map((path)->{
-			return HotPlaceImage.builder().imagePath(path).build();
-		}).collect(Collectors.toList());
-		
 		HotPlace hotPlace = HotPlace
 				.builder()
-				.user(userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException()))
+				.user(userRepository.findById(userId).orElseThrow(IllegalArgumentException::new))
 				.title(dto.getTitle())
 				.content(dto.getContent())
 				.location(dto.getLocation())
@@ -38,15 +34,19 @@ public class HotPlaceService {
 				.longitude(dto.getLongitude())
 				.hashTag(dto.getHashTag())
 				.contentType(dto.getContentType())
-				.images(paths)
 				.build();
+
+		List<HotPlaceImage> paths = dto.getImgPaths().stream().map((path)->
+				HotPlaceImage.builder().imagePath(path).hotplace(hotPlace).build()).collect(Collectors.toList());
+
+		hotPlace.setImages(paths);
 		hotPlaceRepository.save(hotPlace);
 	}
 	
 	public void updateHotPlace(EditRequest dto) {
 		HotPlace hotPlace = hotPlaceRepository
 				.findById(dto.getHotPlaceId())
-				.orElseThrow(()->new IllegalArgumentException());
+				.orElseThrow(IllegalArgumentException::new);
 		
 		hotPlace.updateContent(dto.getContent());
 		hotPlace.updateHashTag(dto.getHashTag());
@@ -65,6 +65,6 @@ public class HotPlaceService {
 	}
 	
 	public HotPlaceDetail getHotPlaceDetail(int hotPlaceId) {
-		return HotPlaceDetail.from(hotPlaceRepository.findById(hotPlaceId).orElseThrow(()->new IllegalArgumentException()));
+		return HotPlaceDetail.from(hotPlaceRepository.findById(hotPlaceId).orElseThrow(IllegalArgumentException::new));
 	}
 }
