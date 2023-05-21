@@ -82,7 +82,7 @@
                     <b-form-group class="mt-3">
                         <b-form-input class="mb-3" placeholder="이름을 입력하세요." type="text"
                             v-model="signUpForm.name"></b-form-input>
-                        <b-form-input class="mb-3" placeholder="이메일를 입력하세요." type="email"
+                        <b-form-input class="mb-3" placeholder="이메일을 입력하세요." type="email"
                             v-model="signUpForm.email"></b-form-input>
                         <b-form-input class="mb-3" placeholder="아이디를 입력하세요." type="text"
                             v-model="signUpForm.loginId"></b-form-input>

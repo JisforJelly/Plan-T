@@ -69,14 +69,8 @@ export default {
         return {
             postId : -1,
             readOnly: true,
-            post: {
-                title: "",
-                content: "<p>dsfsdfsdfs</p>",
-            },
-            comments: [{
-                createdAt: "1124.12.31",
-                content :"덧글 내용1111",
-            }],
+            post: {},
+            comments: [],
             customToolbar: [
                 ["bold", "italic", "underline"],
                 [{ list: "ordered" }, { list: "bullet" }],
@@ -99,7 +93,8 @@ export default {
             });
 
             await getComments(this.postId, (response)=>{
-                this.comments = response.data; // 수정
+                console.log(response.data.comments)
+                this.comments = response.data.comments; // 수정
             });
         },
         movePostList() { 

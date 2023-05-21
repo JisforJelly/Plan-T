@@ -48,6 +48,7 @@ public class CommentDto {
         
         public static CommentItem from(Comment comment) {
         	return CommentItem.builder()
+        			.commentId(comment.getCommentId())
         			.postId(comment.getPost().getPostId())
         			.name(comment.getUser().getName())
         			.content(comment.getContent())

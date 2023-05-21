@@ -7,7 +7,7 @@
           <p class="writer m-0" >작성자 :
             <span class="name font-weight-bold pt-1" >
               <!-- 수정 -->
-              {{ comment.user.name }} 
+              {{ comment.name }} 
             </span>
           </p>
           <p class="time my-0 ml-3 font-italic" >
