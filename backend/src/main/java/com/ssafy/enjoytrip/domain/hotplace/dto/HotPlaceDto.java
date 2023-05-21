@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.domain.hotplace.dto;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class HotPlaceDto {
 		private String hashTag;
 		private String contentType;
 		private List<String> images;
+		private LocalDateTime createdAt; // 글 작성 시간
 		
 		public static HotPlaceDetail from(HotPlace hotPlace) {
 			List<String> imgPaths = hotPlace.getImages()
@@ -45,6 +47,7 @@ public class HotPlaceDto {
 					.longitude(hotPlace.getLongitude())
 					.hashTag(hotPlace.getHashTag())
 					.contentType(hotPlace.getContentType())
+					.createdAt(hotPlace.getCreatedAt())
 					.images(imgPaths)
 					.build();
 		}
