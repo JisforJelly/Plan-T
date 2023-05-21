@@ -20,12 +20,18 @@
             </router-link>
             <div class="d-flex align-items-center justify-content-between mt-2">
                 <b-badge class="p-2" variant="secondary"> {{hotplace.hashTag}}</b-badge>
-                <b-icon class="font-red" :icon="isFill ? 'heart-fill' : 'heart'"></b-icon>
+
+                <b-button variant="none" @click="toggleHotplaceLike"> 
+
+                <b-icon v-if="isFill" class="font-red" icon="heart-fill"></b-icon>
+                <b-icon v-else class="font-red" icon="heart"></b-icon>
+                </b-button>
             </div>
         </div>
     </b-col>
 </template>
 <script>
+import {toglgeHotPlaceLike} from "@/api/hotplace"
 
 export default {
     name: 'HotPlaceListItem',
@@ -35,7 +41,7 @@ export default {
     },
     data() {
         return {
-            isFill: true,
+            isFill: this.hotplace.isFill,
         };
     },
     setup() { },
@@ -43,7 +49,15 @@ export default {
     mounted() { 
     },
     unmounted() { },
-    methods: {}
+    methods: {
+        toggleHotplaceLike: function() {
+            toglgeHotPlaceLike(this.hotplace.hotPlaceId, (response)=>{
+                if(response.status === 200) {
+                    this.isFill = !this.isFill;
+                }
+            });
+        }
+    }
 }
 </script>
 
