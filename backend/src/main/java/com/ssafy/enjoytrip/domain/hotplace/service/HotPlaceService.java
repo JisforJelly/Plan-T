@@ -3,6 +3,9 @@ package com.ssafy.enjoytrip.domain.hotplace.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto;
+import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlaceLike;
+import com.ssafy.enjoytrip.domain.hotplace.repository.HotPlaceLikeRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class HotPlaceService {
-	
+
 	private final HotPlaceRepository hotPlaceRepository;
+	private final HotPlaceLikeRepository hotPlaceLikeRepository;
 	private final UserRepository userRepository;
 	
 	public void insertHotPlace(EditRequest dto, Integer userId) {
@@ -66,5 +70,25 @@ public class HotPlaceService {
 	
 	public HotPlaceDetail getHotPlaceDetail(int hotPlaceId) {
 		return HotPlaceDetail.from(hotPlaceRepository.findById(hotPlaceId).orElseThrow(IllegalArgumentException::new));
+	}
+
+	public void toggleHotPlaceLike(int hotPlaceId, int userId) {
+		HotPlaceLike hotPlaceLike = hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId);
+		if(hotPlaceLike == null) {
+			insertHotPlaceLike(hotPlaceId, userId);
+		} else {
+			hotPlaceLikeRepository.delete(hotPlaceLike);
+		}
+	}
+
+	public HotPlaceDto.UserLikeHotPlace getUserLikeHotPlaceId(int userId) {
+		return new HotPlaceDto.UserLikeHotPlace(hotPlaceLikeRepository.findByUserUserId(userId));
+	}
+
+	private void insertHotPlaceLike(int hotPlaceId, int userId) {
+		hotPlaceLikeRepository.save(HotPlaceLike.builder()
+				.user(userRepository.findById(userId).orElseThrow(IllegalArgumentException::new))
+				.hotplace(hotPlaceRepository.findById(hotPlaceId).orElseThrow(IllegalArgumentException::new))
+				.build());
 	}
 }

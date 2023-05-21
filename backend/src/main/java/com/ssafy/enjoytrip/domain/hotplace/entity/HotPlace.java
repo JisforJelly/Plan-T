@@ -64,11 +64,7 @@ public class HotPlace extends BaseEntity {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="hotplace", cascade=CascadeType.REMOVE)
 	private List<HotPlaceLike> likes;
-	
-	public void updateTitle(String title) {
-		this.title = title;
-	}
-	
+
 	public void updateContent(String content) {
 		this.content = content;
 	}
