@@ -38,7 +38,7 @@ const routes = [
         component: GalleryRegist,
       },
       {
-        path: "detail",
+        path: "detail/:no",
         name: "GalleryDetail",
         component: GalleryDetail,
       },

@@ -19,6 +19,11 @@ const userStore = {
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
+    LOGOUT: (state) => {
+      state.isLogin = false;
+      state.userInfo = null;
+      sessionStorage.removeItem("access-token");
+    },
     SET_ACCESS_TOKEN: (state, token) => {
       state.accessToken = token;
     },

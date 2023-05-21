@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto;
 import com.ssafy.enjoytrip.global.util.FileUploadUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -70,5 +71,18 @@ public class HotPlaceController {
 		hotPlaceService.updateHotPlace(dto);
 		return ResponseEntity.ok().build();
 	}
-	
+
+	@PostMapping("/{hotplaceId}/likes")
+	public ResponseEntity<Void> toggleHotPlaceLike(
+			@TokenVallidator AuthInfo authInfo,
+			@PathVariable Integer hotplaceId) {
+		hotPlaceService.toggleHotPlaceLike(hotplaceId, authInfo.getUserId());
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/likes")
+	public ResponseEntity<HotPlaceDto.UserLikeHotPlace> getHotPlaceLike(
+			@TokenVallidator AuthInfo authInfo) {
+		return new ResponseEntity<>(hotPlaceService.getUserLikeHotPlaceId(authInfo.getUserId()), HttpStatus.OK);
+	}
 }

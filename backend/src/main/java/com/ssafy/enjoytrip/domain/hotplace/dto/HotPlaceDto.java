@@ -1,9 +1,11 @@
 package com.ssafy.enjoytrip.domain.hotplace.dto;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlaceLike;
 import org.springframework.data.domain.Page;
 
 import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlace;
@@ -29,6 +31,8 @@ public class HotPlaceDto {
 		private String hashTag;
 		private String contentType;
 		private List<String> images;
+		private LocalDateTime createdAt; // 글 작성 시간
+		private Integer likeCnt;
 		
 		public static HotPlaceDetail from(HotPlace hotPlace) {
 			List<String> imgPaths = hotPlace.getImages()
@@ -45,7 +49,9 @@ public class HotPlaceDto {
 					.longitude(hotPlace.getLongitude())
 					.hashTag(hotPlace.getHashTag())
 					.contentType(hotPlace.getContentType())
+					.createdAt(hotPlace.getCreatedAt())
 					.images(imgPaths)
+					.likeCnt(hotPlace.getLikes().size())
 					.build();
 		}
 	}
@@ -112,5 +118,16 @@ public class HotPlaceDto {
 		private String hashTag;
 		private String contentType;
 		private List<String> imgPaths = new LinkedList<>();
+	}
+
+	@Data
+	public static class UserLikeHotPlace {
+		private List<Integer> hotplaceIds;
+
+		public UserLikeHotPlace(List<HotPlaceLike> hotPlaceLike) {
+			this.hotplaceIds = hotPlaceLike.stream()
+					.mapToInt((obj)->obj.getHotplace().getHotPlaceId())
+					.boxed().collect(Collectors.toList());
+		}
 	}
 }
