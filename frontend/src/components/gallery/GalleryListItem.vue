@@ -8,13 +8,13 @@
         img-height="560"
         class="rounded"
         >
-            <router-link :to="{name: 'GalleryDetail'}">
+            <router-link :to="{name: 'GalleryDetail', params: { 'no': hotplace.hotPlaceId }}">
                 <b-carousel-slide v-for="image in hotplace.imgPaths" :key="image" :img-src="'http://localhost:8080/image/'+image"> </b-carousel-slide>
             </router-link>
         </b-carousel>
 
         <div class="d-flex flex-column justify-content-start">
-            <router-link :to="{name: 'GalleryDetail'}">
+            <router-link :to="{name: 'GalleryDetail', params: { 'no': hotplace.hotPlaceId }}">
                 <p class="hotplace-name text-truncate fw-bolder mt-2 mb-1" align="left"> {{hotplace.title}}</p>
                 <p class="fw-bolder hotplace-content m-0" align="left"> {{ hotplace.shortContents }} </p>
             </router-link>

@@ -40,6 +40,13 @@ export const openDaumPost = (callback) => {
     }).open();
 }
 
+export const setMarker = (latitude, longitude) => {
+    const coords = new window.daum.maps.LatLng(latitude, longitude);
+    map.setCenter(coords); 
+    marker.setPosition(coords)
+    console.log(coords, map)
+}
+
 export const getLatLng = () => {
     return coordinates;
 };

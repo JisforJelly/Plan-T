@@ -23,19 +23,11 @@
            <div class="d-flex justify-content-between mb-2">
                 <KaKaoMap :mapCss="mapStyle"/>
                 <b-carousel :interval="0" controls indicators background="#ababab" class="rounded w-50">
-                    <b-carousel-slide>
+                    <b-carousel-slide  v-for="image in prevViewImages" :key="image">
                         <template #img>
                             <img
                                 class="d-block img-fluid w-100"
-                                src="http://localhost:8080/assets/img/gallery/gallery-1.jpg"
-                                alt="image slot">
-                        </template>
-                    </b-carousel-slide>
-                    <b-carousel-slide>
-                        <template #img>
-                            <img
-                                class="d-block img-fluid w-100"
-                                src="http://localhost:8080/assets/img/gallery/gallery-2.jpg"
+                                :src="image"
                                 alt="image slot">
                         </template>
                     </b-carousel-slide>
@@ -102,6 +94,7 @@ export default {
                 contentType: null,
                 imgPath: [],
             },
+            prevViewImages: [],
             uploadedImg: [],
             options: [],
             defaultOptions: {
@@ -126,6 +119,14 @@ export default {
             }
         });
     },
+    watch: {
+        uploadedImg: function(files) {
+            this.prevViewImages = [];
+            files.forEach((file)=>{
+                this.prevViewImages.push(URL.createObjectURL(file));
+            })
+        }
+    },
     mounted() {},
     unmounted() {},
     methods:{
@@ -138,8 +139,8 @@ export default {
                 return;
             }
 
-            insertHotPlace(this.getRequestFormData(), (response)=>{
-                console.log(response.data);
+            insertHotPlace(this.getRequestFormData(), ()=>{
+                this.$router.push({ name: "GalleryList" }).catch(() => { });
             });
         },
         openAddressSearch() {

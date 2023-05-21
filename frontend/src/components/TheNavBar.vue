@@ -55,7 +55,7 @@
                             </div>
                         </template>
                         <!-- select option  TODO Log out & my page-->
-                        <b-dropdown-item-button v-for="item in afterLoginUserDropDown"
+                        <b-dropdown-item-button v-for="item in afterLoginUserDropDown" @click="userAction(item.value)"
                             :key="item.mkey" aria-describedby="dropdown-header-label" v-bind:value="item.value">
                             {{ item.text }}
                         </b-dropdown-item-button>
@@ -97,7 +97,7 @@
 </template>
 <script>
 import { signUp } from "@/api/auth"
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
     name: 'TheNavBar',
@@ -176,6 +176,7 @@ export default {
     unmounted() { },
     methods: {
         ...mapActions("userStore", ["userConfirm"]),
+        ...mapMutations("userStore", {'logout' : "LOGOUT"}),
         async confirm() {
             await this.userConfirm(this.signInForm);
         },
@@ -198,6 +199,13 @@ export default {
                     alert("회원가입에 성공했습니다.");
                     console.log(resp)
                 });
+            }
+        },
+        userAction(idx) {
+            if(idx == 0) {
+                this.logout();
+                alert("로그아웃 되었습니다.");
+                this.$router.push({path: '/'}).catch(() => { });
             }
         }
     }
