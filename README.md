@@ -39,3 +39,21 @@
 - HotPlace dto 설계, 기본 crud 작성 
 - Trip Place database 설계(2)
 ```
+
+```
+2023-05-22 월요일 작업 일정
+
+[공통]
+- 진행사항 논의 
+
+[FE]
+---
+- 네비게이션 바 오류 수정 
+- HotPlace 삭제, 수정 페이지 (기존 Hotplace 등록 페이지 참고)
+
+---
+[BE] 
+- Trip Place 백엔드 기능 개발
+- Trip Place UI 초안 작성
+
+```
