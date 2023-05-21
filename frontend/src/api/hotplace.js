@@ -2,7 +2,10 @@ import { apiInstance } from "./index.js";
 
 const api = apiInstance();
 
-async function getHotPlaces() {
+async function getHotPlaces(success) {
+  await api.get("/hotplaces")
+  .then(success)
+  .catch(e=>{console.log(e)});
 }
 
 async function insertHotPlace(form, success) {

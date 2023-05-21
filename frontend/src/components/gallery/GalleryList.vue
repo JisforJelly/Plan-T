@@ -4,7 +4,7 @@
         <div class="main-content d-flex" >
             <b-row class="w-100">
                 <!-- width height 1: ? 비율 유지되야함 -->
-                <HotPlaceItem  v-for="i in 50" :key=i />
+                <HotPlaceItem :hotplace="hotplace"  v-for="hotplace in hotplaces" :key="hotplace.hotplaceId"  />
             </b-row>
         </div>
         <!-- main end-->
@@ -13,6 +13,7 @@
 
 <script>
 import HotPlaceItem from "@/components/gallery/GalleryListItem.vue"
+import { getHotPlaces } from "@/api/hotplace"
 
 export default {
     name: 'GalleryList',
@@ -21,17 +22,14 @@ export default {
     },
     data() {
         return {
-            // mock up용 데이터 
-            hotplaces: [
-                {},
-                {},
-                {},
-                {},
-                {},
-            ],
+            hotplaces: [],
         }
     },
-    created() { },
+    created() { 
+        getHotPlaces((response)=>{
+            this.hotplaces = response.data.hotPlaces;
+        })
+    },
     mounted() {
     },
     methods: {
