@@ -1,39 +1,35 @@
 <template>
-    <div id="map"></div>
+    <div id="map" :style="mapStyle"></div>
 </template>
 <script>
+import { setDaumMap } from "@/util/daumPostUtil";
 export default {
     name:'KakaoMap',
     components:{},
+    props: {
+        mapCss: Object,
+    },
     data() {
         return {
             map: null,
         };
     },
-    setup() {},
-    created() {},
     mounted() {
         this.drawMap();
     },
-    unmounted() {},
+    computed: {
+        mapStyle() {
+            return this.mapCss;
+        }
+    },
     methods: {
         drawMap() { 
-            const container = document.getElementById('map');
-            const options = {
-                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3,
-            };
-
-            this.map = new window.kakao.maps.Map(container, options);
+            setDaumMap(document.getElementById('map'));
         },
     }
 }
 </script>
 
 <style scoped>
-#map {
-    display: table;
-    width: 49%;
-    height: 560px;
-}
+
 </style>
