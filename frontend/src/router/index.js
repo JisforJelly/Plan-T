@@ -5,6 +5,7 @@ import GalleryPage from "@/views/GalleryPage";
 import GalleryList from "@/components/gallery/GalleryList";
 import GalleryRegist from "@/components/gallery/GalleryRegist";
 import GalleryDetail from "@/components/gallery/GalleryDetail";
+import GalleryModify from "@/components/gallery/GalleryModify";
 
 import TripPlan from "@/views/TripPlan";
 
@@ -41,6 +42,11 @@ const routes = [
         path: "detail/:no",
         name: "GalleryDetail",
         component: GalleryDetail,
+      },
+      {
+        path: "modify/:no",
+        name: "GalleryModify",
+        component: GalleryModify,
       },
     ],
   },

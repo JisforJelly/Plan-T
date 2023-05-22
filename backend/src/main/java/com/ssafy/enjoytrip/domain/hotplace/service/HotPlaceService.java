@@ -52,6 +52,7 @@ public class HotPlaceService {
 				.findById(dto.getHotPlaceId())
 				.orElseThrow(IllegalArgumentException::new);
 		
+		hotPlace.updateTitle(dto.getTitle());
 		hotPlace.updateContent(dto.getContent());
 		hotPlace.updateHashTag(dto.getHashTag());
 		hotPlace.updateLocationInfo(dto.getLocation(), dto.getLatitude(), dto.getLongitude());
@@ -79,6 +80,11 @@ public class HotPlaceService {
 		} else {
 			hotPlaceLikeRepository.delete(hotPlaceLike);
 		}
+	}
+	
+	public boolean isLike(int hotPlaceId, int userId) {
+		HotPlaceLike test = hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId);
+		return hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId) != null;
 	}
 
 	public HotPlaceDto.UserLikeHotPlace getUserLikeHotPlaceId(int userId) {

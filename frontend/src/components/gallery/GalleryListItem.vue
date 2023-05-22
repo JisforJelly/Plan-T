@@ -22,9 +22,8 @@
                 <b-badge class="p-2" variant="secondary"> {{hotplace.hashTag}}</b-badge>
 
                 <b-button variant="none" @click="toggleHotplaceLike"> 
-
-                <b-icon v-if="isFill" class="font-red" icon="heart-fill"></b-icon>
-                <b-icon v-else class="font-red" icon="heart"></b-icon>
+                    <b-icon v-if="isFill" class="font-red" icon="heart-fill"></b-icon>
+                    <b-icon v-else class="font-red" icon="heart"></b-icon>
                 </b-button>
             </div>
         </div>
