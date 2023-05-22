@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="header d-flex flex-column h-100 sticky-top">
+        <div class="header d-flex flex-column h-100">
             <div>
                 <h2 class="font-weight-bold mb-0 w-auto"> 핫플레이스 등록 </h2>
             </div>
@@ -141,6 +141,9 @@ export default {
 
             insertHotPlace(this.getRequestFormData(), ()=>{
                 this.$router.push({ name: "GalleryList" }).catch(() => { });
+            }, (e)=>{
+                console.log(e);
+                alert("등록에 실패하였습니다. 관리자에게 문의하세요.")
             });
         },
         openAddressSearch() {
