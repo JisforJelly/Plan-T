@@ -16,6 +16,15 @@ async function getHotPlaces(success, likeSuccess) {
     });
 }
 
+async function getUserLikeHotPlace(success) {
+  await api
+    .get("/hotplaces/user")
+    .then(success)
+    .catch((e) => {
+      console.log(e);
+    });
+}
+
 async function getHotPlace(hotplaceId, success) {
   await api
     .get(`/hotplaces/${hotplaceId}`)
@@ -68,4 +77,5 @@ export {
   updateHotPlace,
   toglgeHotPlaceLike,
   isUserLikeHotplace,
+  getUserLikeHotPlace,
 };

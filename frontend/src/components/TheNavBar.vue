@@ -39,7 +39,7 @@
                             </div>
                         </template>
                         <!-- select option -->
-                        <b-dropdown-item-button @click="$bvModal.show('userModal')" v-for="item in beforeLoginUserDropDown"
+                        <b-dropdown-item-button @click="beforeLogin" v-for="item in beforeLoginUserDropDown"
                             :key="item.mkey" aria-describedby="dropdown-header-label" v-bind:value="item.value">
                             {{ item.text }}
                         </b-dropdown-item-button>
@@ -80,7 +80,7 @@
                 </b-tab>
                 <b-tab title="회원가입">
                     <b-form-group class="mt-3">
-                        <b-form-input class="mb-3" placeholder="이름을 입력하세요." type="text"
+                        <b-form-input class="mb-3" placeholder="별명을 입력하세요." type="text"
                             v-model="signUpForm.name"></b-form-input>
                         <b-form-input class="mb-3" placeholder="이메일을 입력하세요." type="email"
                             v-model="signUpForm.email"></b-form-input>
@@ -93,10 +93,33 @@
                 </b-tab>
             </b-tabs>
         </b-modal>
+
+        <!-- find id modal -->
+        <b-modal id="findIdModal" header-class="d-none" body-class="userModalBody" footer-class="border-0 userModalFooter"
+            @ok="confirmAuthModal">
+            <b-tabs class="w-100" v-model="findAuthIndex">
+                <b-tab title="아이디 찾기" active>
+                    <b-form class="mt-3">
+                        <b-form-group>
+                            <b-form-input class="mb-3" placeholder="가입 시 입력하신 이메일을 입력하세요." type="text"
+                                v-model="findIdEmail"></b-form-input>
+                        </b-form-group>
+                    </b-form>
+                </b-tab>
+                <b-tab title="비밀번호 찾기">
+                    <b-form-group class="mt-3">
+                        <b-form-input class="mb-3" placeholder="아이디를 입력하세요" type="text"
+                            v-model="findPasswordForm.loginId"></b-form-input>
+                        <b-form-input class="mb-3" placeholder="이메일을 입력하세요." type="email"
+                            v-model="findPasswordForm.email"></b-form-input>
+                    </b-form-group>
+                </b-tab>
+            </b-tabs>
+        </b-modal>
     </div>
 </template>
 <script>
-import { signUp } from "@/api/auth"
+import { signUp, sendFindIdEmail } from "@/api/auth"
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
@@ -106,6 +129,7 @@ export default {
     data() {
         return {
             tabIndex: 0,
+            findAuthIndex: 0,
             menus: [
                 {
                     mkey: "m-1",
@@ -126,7 +150,6 @@ export default {
                     routeName: "FreeBoard",
                 }
             ],
-            // TODO: vuex  login state 관리
             beforeLoginUserDropDown: [
                 {
                     mkey: "blu-1",
@@ -137,6 +160,16 @@ export default {
                     mkey: "blu-2",
                     value: 1,
                     text: "로그인",
+                },
+                {
+                    mkey: "blu-3",
+                    value: 2,
+                    text: "아이디 찾기",
+                },
+                {
+                    mkey: "blu-4",
+                    value: 3,
+                    text: "비밀번호 찾기",
                 },
             ],
             afterLoginUserDropDown: [
@@ -159,6 +192,11 @@ export default {
                 loginId: "",
                 password: "",
                 name: "",
+                email: "",
+            },
+            findIdEmail : "",
+            findPasswordForm: {
+                loginId: "",
                 email: "",
             }
         };
@@ -195,17 +233,35 @@ export default {
             if (this.tabIndex === 0) {
                 this.confirm();
             } else {
-                signUp(this.signUpForm, (resp) => {
+                signUp(this.signUpForm, () => {
                     alert("회원가입에 성공했습니다.");
-                    console.log(resp)
                 });
             }
+        },
+        confirmAuthModal() {
+             if (this.findAuthIndex === 0) {
+                console.log("아이디 찾기 ");
+                sendFindIdEmail({email: this.findIdEmail}, (response)=>{
+                    alert(response.data);
+                });
+             } else {
+                console.log("TODO : 비밀 번호 찾기");
+             }
         },
         userAction(idx) {
             if(idx == 0) {
                 this.logout();
                 alert("로그아웃 되었습니다.");
                 this.$router.push({path: '/'}).catch(() => { });
+            } else {
+                this.$router.push({name:"MyPage"}).catch(()=>{});
+            }
+        },
+        beforeLogin(event) {
+            if(event.target.value > 1) {
+                this.$bvModal.show('findIdModal');
+            } else {
+                this.$bvModal.show('userModal');
             }
         }
     }

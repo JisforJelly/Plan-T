@@ -69,6 +69,10 @@ public class HotPlaceService {
 		return HotPlaceListView.ofPage(hotPlaceRepository.findAll(pageable));
 	}
 	
+	public HotPlaceListView getUserLikeHotPlaces(Pageable pageable, Integer userId) {
+		return HotPlaceListView.ofPage(hotPlaceRepository.findByLikesUserUserId(pageable, userId));
+	}
+	
 	public HotPlaceDetail getHotPlaceDetail(int hotPlaceId) {
 		return HotPlaceDetail.from(hotPlaceRepository.findById(hotPlaceId).orElseThrow(IllegalArgumentException::new));
 	}

@@ -15,6 +15,9 @@ import FreeBoardRegist from "@/components/board/FreeBoardRegist";
 import FreeBoardDetail from "@/components/board/FreeBoardDetail";
 import FreeBoardModify from "@/components/board/FreeBoardModify";
 
+import UserMyPage from "@/views/UserMyPage";
+import UserMainPage from "@/components/user/UserMainPage";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -81,6 +84,18 @@ const routes = [
     path: "/trip",
     name: "TripPlan",
     component: TripPlan,
+  },
+  {
+    path: "/mypage",
+    name: "MyPage",
+    component: UserMyPage,
+    children: [
+      {
+        path: "",
+        name: "UserMainPage",
+        component: UserMainPage,
+      },
+    ],
   },
 ];
 
