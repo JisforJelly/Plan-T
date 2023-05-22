@@ -10,4 +10,5 @@ import com.ssafy.enjoytrip.domain.user.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
 	Optional<User> findByLoginId(String loginId);
+	User findByEmail(String email);
 }

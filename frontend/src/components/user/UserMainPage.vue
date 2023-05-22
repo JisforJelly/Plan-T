@@ -3,10 +3,11 @@
 </template>
 <script>
 export default {
-    name:'GalleryPage',
+    name:'UserMainPage',
     components:{},
     data() {
         return {
+            sampleData:''
         };
     },
     setup() {},

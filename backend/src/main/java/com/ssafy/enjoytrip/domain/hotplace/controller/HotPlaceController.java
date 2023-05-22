@@ -45,6 +45,13 @@ public class HotPlaceController {
 	public ResponseEntity<HotPlaceListView> getHotPlaces(@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
 		return new ResponseEntity<>(hotPlaceService.getHotPlaces(pageable), HttpStatus.OK);
 	}
+	
+	@GetMapping("/user") 
+	public ResponseEntity<HotPlaceListView> getUserLikeHotPlaces(
+			@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable,
+			@TokenVallidator AuthInfo authInfo) {
+		return new ResponseEntity<>(hotPlaceService.getUserLikeHotPlaces(pageable, authInfo.getUserId()), HttpStatus.OK);
+	}
 
 	@GetMapping("/{hotPlaceId}") 
 	public ResponseEntity<HotPlaceDetail> getHotPlaceDetail(@PathVariable Integer hotPlaceId) {
