@@ -52,6 +52,17 @@ public class UserService {
 		
 		user.setLastLogin(LocalDateTime.now());
 		user.setWrongCng(0);
-		return new UserDto.AuthInfo(user.getUserId(), user.getLoginId(), user.getName(), user.getRole().getRole());
+		return new UserDto.AuthInfo(user.getUserId(), user.getLoginId(), user.getName(), user.getRole().getRole(), user.getProfileImgPath());
+	}
+	
+	@Transactional
+	public void updateUserInfo(Integer userId, String imgPath, String name) {
+		User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+		user.updateName(name);
+		if(imgPath != null) {
+			user.updateImg(imgPath);
+		}
+		
+		userRepository.save(user);
 	}
 }

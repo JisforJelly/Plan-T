@@ -27,24 +27,26 @@ public class UserDto {
 
     @Data
     public static class UserInfoResponse {
-        int userId;
-        String loginId;
-        String email;
-        String phone;
+    	private int userId;
+    	private String loginId;
+    	private String email;
+    	private String phone;
     }
     
     @Data
     public static class AuthInfo {
-    	Integer userId;
-    	String loginId;
-    	String name;
-    	String userRole;
+    	private Integer userId;
+    	private String loginId;
+    	private String name;
+    	private String userRole;
+    	private String profileImgPath;
     	
-    	public AuthInfo(int userId, String loginId, String name, String userRole) {
+    	public AuthInfo(int userId, String loginId, String name, String userRole, String profileImgPath) {
     		this.userId = userId;
     		this.loginId = loginId;
     		this.name = name;
     		this.userRole = userRole;
+    		this.profileImgPath = profileImgPath;
     	}
     }
 }

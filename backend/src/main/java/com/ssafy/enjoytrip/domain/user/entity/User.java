@@ -48,6 +48,9 @@ public class User extends BaseEntity {
 	@Column(name = "wrong_cnt")
 	private int wrongCnt;
 	
+	@Column(name ="profile_img_path")
+	private String profileImgPath;
+	
 	@Column(name="role")
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
@@ -58,5 +61,13 @@ public class User extends BaseEntity {
 	
 	public void setWrongCng(int cnt) {
 		this.wrongCnt = cnt;
+	}
+	
+	public void updateName(String name) {
+		this.name = name;
+	}
+	
+	public void updateImg(String path) {
+		this.profileImgPath = path;
 	}
 }

@@ -5,7 +5,6 @@
                 <div class="d-flex h-100 align-items-center">
                     <img class="logo" src="@/assets/EnjoyTrip.png" />
                 </div>
-
                 <div class="d-flex flex-grow-1 h-100 ml-2 align-items-center p-5">
                     <b-dropdown id="dropdown-header" :text="menu.text" class="m-2" variant="none" size="lg" dropright
                         toggle-class="custom-font-style">
@@ -51,7 +50,7 @@
                         <template #button-content>
                             <div size="sm" class="d-flex align-items-center">
                                 <b-icon-list class="mx-1" />
-                                <b-avatar class="ml-1"></b-avatar>
+                                <b-avatar class="ml-1" :src="avatarSrc"></b-avatar>
                             </div>
                         </template>
                         <!-- select option  TODO Log out & my page-->
@@ -128,6 +127,7 @@ export default {
     },
     data() {
         return {
+            avatarSrc: "",
             tabIndex: 0,
             findAuthIndex: 0,
             menus: [
@@ -207,6 +207,11 @@ export default {
     },
     computed: {
         ...mapState("userStore", ["userInfo", "isLogin"]),
+    },
+    watch: {
+        userInfo(newValue) { 
+            this.avatarSrc = (newValue == null) ? "" : 'http://localhost:8080/image/'+newValue.profileImgPath;
+        }
     },
     setup() { },
     created() { },

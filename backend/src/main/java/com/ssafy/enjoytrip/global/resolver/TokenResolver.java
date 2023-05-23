@@ -37,7 +37,7 @@ public class TokenResolver implements HandlerMethodArgumentResolver {
         Enumeration<String> headers = request.getHeaders(HttpHeaders.AUTHORIZATION);
         String token = extractAccessToken(Objects.requireNonNull(headers));
         if (token == null) {
-            return new UserDto.AuthInfo(-1, null, null, null);
+            return new UserDto.AuthInfo(-1, null, null, null, null);
         }
         return tokenUtil.getClaims(token);
 	}

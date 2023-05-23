@@ -37,6 +37,7 @@ public class JwtTokenUtil implements TokenUtil {
     			.claim("loginId", dto.getLoginId())
     			.claim("role", dto.getUserRole())
     			.claim("name", dto.getName())
+    			.claim("profileImgPath", dto.getProfileImgPath())
     			.setIssuedAt(issuedDate)
     			.setExpiration(expiration)
     			.signWith(SECRET_KEY, SignatureAlgorithm.HS256).compact();
@@ -54,7 +55,8 @@ public class JwtTokenUtil implements TokenUtil {
 		return new AuthInfo(claims.get("userId", Integer.class),
 				claims.get("loginId", String.class), 
 				claims.get("name", String.class), 
-				claims.get("role", String.class));
+				claims.get("role", String.class),
+				claims.get("profileImgPath", String.class));
 	}
 
 	@Override
