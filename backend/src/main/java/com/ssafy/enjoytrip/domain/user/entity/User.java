@@ -70,4 +70,8 @@ public class User extends BaseEntity {
 	public void updateImg(String path) {
 		this.profileImgPath = path;
 	}
+
+	public void updatePassword(String password) {
+		this.password = password;
+	}
 }
