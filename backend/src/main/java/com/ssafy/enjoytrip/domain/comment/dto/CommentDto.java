@@ -42,6 +42,7 @@ public class CommentDto {
     public static class CommentItem {
     	private Integer commentId;
         private Integer postId;
+        private Integer userId;
         private String name;
         private String content;
         private String createdAt;
@@ -50,6 +51,7 @@ public class CommentDto {
         	return CommentItem.builder()
         			.commentId(comment.getCommentId())
         			.postId(comment.getPost().getPostId())
+        			.userId(comment.getUser().getUserId())
         			.name(comment.getUser().getName())
         			.content(comment.getContent())
         			.createdAt(comment.getCreatedAt().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)))
