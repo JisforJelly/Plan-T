@@ -1,6 +1,16 @@
 <template>
     <div class="container-fluid p-0">
         <!-- title section -->
+        <div class="header d-flex flex-column h-100 mt-5">
+            <div class="board-content d-flex align-items-center">
+                <div class="d-flex flex-grow-2 w-auto" style="padding: 0px 300px">
+                    <b-button class="button mr-2" @click="moveHotPlaceList">목록</b-button>
+                    <b-button v-if="userInfo && (userInfo.userId == hotplaceInfo.userId)" class="button mr-2" @click="moveHotPlaceModify">핫플레이스 수정</b-button>
+                    <b-button v-if="userInfo && (userInfo.userId == hotplaceInfo.userId)" class="button btn-danger mr-2" @click="deleteHotPlace"> 삭제</b-button>
+                </div>
+            </div>
+        </div>
+
         <div class="title-section d-flex flex-column">
 
             <div class="title d-flex mt-3 font-weight-bold"> {{ hotplaceInfo.title }}</div>
@@ -8,7 +18,10 @@
             <div class="d-flex align-items-center mt-1">
                 <div class="mr-3">
                     <b-badge v-if="hotplaceInfo.hashTag" class="p-2 mr-3" variant="secondary"> {{hotplaceInfo.hashTag}}</b-badge>
-                    <b-icon class="mr-1 font-weight-bold font-red" icon="heart-fill" aria-hidden="true"></b-icon>
+                    <b-button class="p-0" variant="none" @click="toggleLike">
+                        <b-icon v-if="isFill" class="mr-1 font-weight-bold font-red" icon="heart-fill" aria-hidden="true"></b-icon>
+                        <b-icon v-else class="mr-1 font-weight-bold font-red" icon="heart" aria-hidden="true"></b-icon>
+                    </b-button>
                     <span class="like font-weight-bold pt-1">{{ hotplaceInfo.like }} </span>
                 </div>
                 
@@ -61,15 +74,22 @@
 <script>
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { setMarker } from "@/util/daumPostUtil"
-import { getHotPlace } from "@/api/hotplace"
+import { getHotPlace, deleteHotPlace, isUserLikeHotplace, toglgeHotPlaceLike } from "@/api/hotplace" 
+import { mapState } from "vuex";
+
 export default {
     name: 'GalleryDetail',
     components: {
         KaKaoMap
     },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
+    },
     data() {
         return {
             hotplaceInfo: {
+                hotPlaceId: -1,
+                userId: -1,
                 title: '핫플레이스 제목 구간',
                 like: 0,
                 userName: "김한성",
@@ -80,6 +100,7 @@ export default {
                 longitude : 0, 
                 latitude: 0,
             },
+            isFill : false,
             mapStyle : {
                 'display': 'table',
                 'width': '49%',
@@ -89,7 +110,9 @@ export default {
     },
     setup() { },
     created() {
-        getHotPlace(this.$route.params.no, (response)=>{
+        getHotPlace(this.$route.params.no, (response) => {
+            this.hotplaceInfo.userId = response.data.userId;
+            this.hotplaceInfo.hotPlaceId = response.data.hotPlaceId;
             this.hotplaceInfo.title = response.data.title;
             this.hotplaceInfo.userName = response.data.userName;
             this.hotplaceInfo.content = response.data.content;
@@ -98,12 +121,35 @@ export default {
             this.hotplaceInfo.hashTag = response.data.hashTag;
             this.hotplaceInfo.latitude = response.data.latitude;
             this.hotplaceInfo.longitude = response.data.longitude;
+            this.hotplaceInfo.like = response.data.likeCnt;
             setMarker(this.hotplaceInfo.latitude, this.hotplaceInfo.longitude);
         });
+
+        isUserLikeHotplace(this.$route.params.no, (response)=>{
+            this.isFill = response.data;
+        })
      },
-    mounted() { },
-    unmounted() { },
-    methods: {},
+    methods: {
+        moveHotPlaceList() {
+            this.$router.push({name:"GalleryList"}).catch(()=>{});
+        },
+        moveHotPlaceModify() {
+            this.$router.push({name:"GalleryModify", params:{'no': this.hotplaceInfo.hotPlaceId}}).catch(()=>{});
+        },
+        deleteHotPlace() {
+            deleteHotPlace(this.hotplaceInfo.hotPlaceId, ()=>{
+                alert("삭제에 성공했습니다.");
+                this.$router.push({name:"GalleryList"}).catch(()=>{});
+            });
+        },
+        toggleLike() {
+            toglgeHotPlaceLike(this.hotplaceInfo.hotPlaceId, (response)=>{
+                if(response.status === 200) {
+                    this.isFill = !this.isFill;
+                }
+            });
+        }
+    },
 }
 </script>
 

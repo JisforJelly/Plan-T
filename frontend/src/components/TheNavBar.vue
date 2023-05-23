@@ -5,7 +5,6 @@
                 <div class="d-flex h-100 align-items-center">
                     <img class="logo" src="@/assets/EnjoyTrip.png" />
                 </div>
-
                 <div class="d-flex flex-grow-1 h-100 ml-2 align-items-center p-5">
                     <b-dropdown id="dropdown-header" :text="menu.text" class="m-2" variant="none" size="lg" dropright
                         toggle-class="custom-font-style">
@@ -28,12 +27,6 @@
                             당신의 <span class="font-red">Hot</span>한 공간을 공유하세요
                         </router-link>
                     </div>
-                    <div class="mr-2" v-if="menu.value == 1">
-                        <router-link class="btn btn-light rounded-pill text-truncate simple-text-style"
-                            :to="{ name: 'PlanRegist' }">
-                            당신의 <span class="font-red">여행</span>을 계획하세요
-                        </router-link>
-                    </div>
 
                     <b-dropdown v-if="!isLogin" class="m-2" variant="outline-secondary" no-caret toggle-class="round-drop-down"
                         offset="-60">
@@ -45,7 +38,7 @@
                             </div>
                         </template>
                         <!-- select option -->
-                        <b-dropdown-item-button @click="$bvModal.show('userModal')" v-for="item in beforeLoginUserDropDown"
+                        <b-dropdown-item-button @click="beforeLogin" v-for="item in beforeLoginUserDropDown"
                             :key="item.mkey" aria-describedby="dropdown-header-label" v-bind:value="item.value">
                             {{ item.text }}
                         </b-dropdown-item-button>
@@ -57,7 +50,7 @@
                         <template #button-content>
                             <div size="sm" class="d-flex align-items-center">
                                 <b-icon-list class="mx-1" />
-                                <b-avatar class="ml-1"></b-avatar>
+                                <b-avatar class="ml-1" :src="avatarSrc"></b-avatar>
                             </div>
                         </template>
                         <!-- select option  TODO Log out & my page-->
@@ -86,7 +79,7 @@
                 </b-tab>
                 <b-tab title="회원가입">
                     <b-form-group class="mt-3">
-                        <b-form-input class="mb-3" placeholder="이름을 입력하세요." type="text"
+                        <b-form-input class="mb-3" placeholder="별명을 입력하세요." type="text"
                             v-model="signUpForm.name"></b-form-input>
                         <b-form-input class="mb-3" placeholder="이메일을 입력하세요." type="email"
                             v-model="signUpForm.email"></b-form-input>
@@ -99,10 +92,33 @@
                 </b-tab>
             </b-tabs>
         </b-modal>
+
+        <!-- find id modal -->
+        <b-modal id="findIdModal" header-class="d-none" body-class="userModalBody" footer-class="border-0 userModalFooter"
+            @ok="confirmAuthModal">
+            <b-tabs class="w-100" v-model="findAuthIndex">
+                <b-tab title="아이디 찾기" active>
+                    <b-form class="mt-3">
+                        <b-form-group>
+                            <b-form-input class="mb-3" placeholder="가입 시 입력하신 이메일을 입력하세요." type="text"
+                                v-model="findIdEmail"></b-form-input>
+                        </b-form-group>
+                    </b-form>
+                </b-tab>
+                <b-tab title="비밀번호 찾기">
+                    <b-form-group class="mt-3">
+                        <b-form-input class="mb-3" placeholder="아이디를 입력하세요" type="text"
+                            v-model="findPasswordForm.loginId"></b-form-input>
+                        <b-form-input class="mb-3" placeholder="이메일을 입력하세요." type="email"
+                            v-model="findPasswordForm.email"></b-form-input>
+                    </b-form-group>
+                </b-tab>
+            </b-tabs>
+        </b-modal>
     </div>
 </template>
 <script>
-import { signUp } from "@/api/auth"
+import { signUp, sendFindIdEmail } from "@/api/auth"
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
@@ -111,7 +127,9 @@ export default {
     },
     data() {
         return {
+            avatarSrc: "",
             tabIndex: 0,
+            findAuthIndex: 0,
             menus: [
                 {
                     mkey: "m-1",
@@ -132,7 +150,6 @@ export default {
                     routeName: "FreeBoard",
                 }
             ],
-            // TODO: vuex  login state 관리
             beforeLoginUserDropDown: [
                 {
                     mkey: "blu-1",
@@ -143,6 +160,16 @@ export default {
                     mkey: "blu-2",
                     value: 1,
                     text: "로그인",
+                },
+                {
+                    mkey: "blu-3",
+                    value: 2,
+                    text: "아이디 찾기",
+                },
+                {
+                    mkey: "blu-4",
+                    value: 3,
+                    text: "비밀번호 찾기",
                 },
             ],
             afterLoginUserDropDown: [
@@ -166,6 +193,11 @@ export default {
                 password: "",
                 name: "",
                 email: "",
+            },
+            findIdEmail : "",
+            findPasswordForm: {
+                loginId: "",
+                email: "",
             }
         };
     },
@@ -176,15 +208,24 @@ export default {
     computed: {
         ...mapState("userStore", ["userInfo", "isLogin"]),
     },
+    watch: {
+        userInfo(newValue) { 
+            this.avatarSrc = (newValue == null) ? "" : 'http://localhost:8080/image/'+newValue.profileImgPath;
+        }
+    },
     setup() { },
-    created() { },
-    mounted() { },
+    created() { 
+        if (this.userInfo && this.userInfo.profileImgPath) { 
+            this.avatarSrc = 'http://localhost:8080/image/' + this.userInfo.profileImgPath;
+        }
+    },
     unmounted() { },
     methods: {
         ...mapActions("userStore", ["userConfirm"]),
         ...mapMutations("userStore", {'logout' : "LOGOUT"}),
         async confirm() {
             await this.userConfirm(this.signInForm);
+            this.$router.go(0);
         },
 
         changeMenu(e) {
@@ -201,17 +242,40 @@ export default {
             if (this.tabIndex === 0) {
                 this.confirm();
             } else {
-                signUp(this.signUpForm, (resp) => {
+                signUp(this.signUpForm, () => {
                     alert("회원가입에 성공했습니다.");
-                    console.log(resp)
                 });
             }
+        },
+        confirmAuthModal() {
+             if (this.findAuthIndex === 0) {
+                console.log("아이디 찾기 ");
+                sendFindIdEmail({email: this.findIdEmail}, (response)=>{
+                    alert(response.data);
+                });
+             } else {
+                console.log("TODO : 비밀 번호 찾기");
+             }
         },
         userAction(idx) {
             if(idx == 0) {
                 this.logout();
                 alert("로그아웃 되었습니다.");
                 this.$router.push({path: '/'}).catch(() => { });
+            } else {
+                this.$emit("menu-change", {
+                    value: "3",
+                    key: "nokey",
+                    text : "My Page",
+                });
+                this.$router.push({name:"MyPage"}).catch(()=>{});
+            }
+        },
+        beforeLogin(event) {
+            if(event.target.value > 1) {
+                this.$bvModal.show('findIdModal');
+            } else {
+                this.$bvModal.show('userModal');
             }
         }
     }

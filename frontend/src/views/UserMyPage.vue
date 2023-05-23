@@ -15,10 +15,12 @@
                                 <th>프로필 사진</th>
                                 <td class="w-100">
                                     <div class="d-flex flex-column"> 
-                                        <b-avatar size="6rem"></b-avatar>
+                                        <b-avatar :src="prevImgPath" size="6rem"></b-avatar>
                                         <div class="d-flex flex-row mt-3">
-                                            <button class="mr-2 profile-btn">사진 변경</button>
-                                            <button class="mr-2 profile-btn">삭제</button>
+                                            <button class="profile-btn ">
+                                                <label for="imgUpload" class="m-0 padding-btn">사진 변경</label>
+                                            </button>
+                                            <input type="file" id="imgUpload" accept="image/*"  style="display:none" @change="uploadNewProfile">
                                         </div>
                                     </div>
                                 </td>
@@ -27,11 +29,16 @@
                                 <th>별명</th>
                                 <td>
                                     <div class="p-2 w-50">
-                                        <b-input></b-input>
+                                        <b-input v-model="updateName"></b-input>
                                     </div>
                                 </td>
                             </tr>
                         </table>
+                    </div>
+
+                    <div class="d-flex justify-content-center bottom-div mt-3">
+                        <button class="mr-2 profile-btn padding-btn tab-title-class" @click="updateUserInfo">적용</button>
+                        <button class="mr-2 profile-btn padding-btn" @click="cancelProfileEdit">취소</button>
                     </div>
                 </b-tab>
                 <b-tab title="나의 여행 계획" :title-link-class="'tab-title-class'">
@@ -52,8 +59,9 @@
     </div>
 </template>
 <script>
-
+import { mapState, mapMutations } from 'vuex'
 import HotPlaceList from "@/components/gallery/GalleryList.vue"
+import { updateUserProfile } from "@/api/user"
 
 export default {
     name:'UserMyPage',
@@ -62,13 +70,46 @@ export default {
     },
     data() {
         return {
+            prevImgPath : "",
+            uploadImg: null,
+            updateName: "",
         };
     },
     setup() {},
-    created() {},
+    created() {
+        this.prevImgPath = (this.userInfo.profileImgPath == undefined) ? "" : 'http://localhost:8080/image/' + this.userInfo.profileImgPath;
+        this.updateName = this.userInfo.name;
+    },
     mounted() {},
-    unmounted() {},
-    methods:{}
+    unmounted() { },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
+    },
+    methods: {
+        ...mapMutations("userStore", {'changeInfo' : "CHNAGE_USER_IMAGE"}),
+        cancelProfileEdit() { 
+            this.$router.go(0);
+        },
+        uploadNewProfile(e) { 
+            this.uploadImg = e.target.files[0];
+            this.prevImgPath = URL.createObjectURL(e.target.files[0]);
+        },
+        updateUserInfo() { 
+            const formData = new FormData();
+            formData.append("name", this.updateName)
+            formData.append("image", this.uploadImg);            
+            updateUserProfile(formData, (response) => { 
+                alert("변경되었습니다.")
+                console.log(response.data);
+                this.changeInfo({
+                    profileImgPath: response.data,
+                    name : this.updateName
+                });
+            }, () => { 
+                alert("서버와 통신이 원할하지 않습니다. 관리자에게 문의하세요.");
+            });
+        }
+    }
 }
 </script>
 
@@ -100,9 +141,19 @@ export default {
     .profile-btn {
         border: 1px solid #bfbfbf;
         background: #fff;
-        padding: 0.6vw 1vw 0.6vw 1vw;
         font-size: 0.8rem;
         font-weight: bold;
+    }
+    .padding-btn {
+        padding: 0.6vw 1vw 0.6vw 1vw;
+    }
+
+    .bottom-div {
+        margin-bottom: 350px;
+    }
+
+    label {
+        cursor: pointer;
     }
 </style>
 
@@ -125,4 +176,6 @@ export default {
     .nav-pills .nav-link {
         background-color: white !important;
     }
+
+    
 </style>

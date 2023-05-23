@@ -22,6 +22,7 @@ public class HotPlaceDto {
 	@Builder
 	public static class HotPlaceDetail {
 		private Integer hotPlaceId;
+		private Integer userId;
 		private String userName;
 		private String title;
 		private String content;
@@ -41,6 +42,7 @@ public class HotPlaceDto {
 			
 			return HotPlaceDetail.builder()
 					.hotPlaceId(hotPlace.getHotPlaceId())
+					.userId(hotPlace.getUser().getUserId())
 					.userName(hotPlace.getUser().getName())
 					.title(hotPlace.getTitle())
 					.content(hotPlace.getContent())

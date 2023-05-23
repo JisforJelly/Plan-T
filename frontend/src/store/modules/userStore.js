@@ -31,6 +31,17 @@ const userStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
+    CHNAGE_USER_IMAGE: (state, changeInfo) => {
+      console.log(changeInfo);
+      const newUserInfo = {
+        ...state.userInfo,
+        name: changeInfo.name,
+      };
+      if (changeInfo.profileImgPath) {
+        newUserInfo.profileImgPath = changeInfo.profileImgPath;
+      }
+      state.userInfo = newUserInfo;
+    },
   },
 
   actions: {

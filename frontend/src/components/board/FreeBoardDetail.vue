@@ -8,8 +8,8 @@
             <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
                     <b-button class="button mr-2" @click="movePostList">목록</b-button>
-                    <b-button class="button mr-2" @click="modifyPost">게시글 수정</b-button>
-                    <b-button class="button btn-danger" @click="deletePost">게시글 삭제</b-button>
+                    <b-button class="button mr-2" @click="modifyPost" v-if="userInfo && userInfo.userId == post.userId">게시글 수정</b-button>
+                    <b-button class="button btn-danger" @click="deletePost" v-if="userInfo && userInfo.userId == post.userId">게시글 삭제</b-button>
                 </div>
             </div>
         </div>
@@ -57,12 +57,11 @@
 import { getPostByPostId, deletePost } from "@/api/post"
 import { getComments, insertComment, deleteComment } from "@/api/comment"
 import TheComment from "@/components/comment/TheComment.vue"
-// import { VueEditor } from "vue2-editor";
+import { mapState } from "vuex";
 
 export default {
     name:'FreeBoardDetail',
     components: {
-        // VueEditor,
         TheComment,
     },
     data() {
@@ -83,6 +82,9 @@ export default {
     created() {
         this.postId = this.$route.params.no;
         this.renderPost();
+    },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
     },
     mounted() {},
     unmounted() {},
@@ -149,7 +151,7 @@ export default {
     margin-top: 60px;
 }
 .content {
-    border: 1px solid #ced4da;
+    border:none;
 }
 .information {
      border-bottom: 1px solid #e3e7eb;
