@@ -31,7 +31,6 @@ export default {
 <style scoped>
 .footer-layer-1 {
     background-color: white;
-    min-width: 1024px;
     height: 60px;
     padding: 0px 300px;
     font-size: 1rem;
@@ -39,7 +38,6 @@ export default {
 .footer-layer-2 {
     background-color: black;
     height: 67px;
-    min-width: 1024px;
     padding: 0px 300px;
     font-size: 0.5rem;
     color: white;

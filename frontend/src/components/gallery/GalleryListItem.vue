@@ -19,18 +19,19 @@
                 <p class="fw-bolder hotplace-content m-0" align="left"> {{ hotplace.shortContents }} </p>
             </router-link>
             <div class="d-flex align-items-center justify-content-between mt-2">
-                <b-badge class="p-2" variant="secondary"> {{hotplace.hashTag}}</b-badge>
+                <b-badge class="p-2" variant="secondary"> #{{hotplace.hashTag}}</b-badge>
 
                 <b-button variant="none" @click="toggleHotplaceLike"> 
-                    <b-icon v-if="isFill" class="font-red" icon="heart-fill"></b-icon>
-                    <b-icon v-else class="font-red" icon="heart"></b-icon>
+
+                <b-icon v-if="isFill" class="font-red" icon="heart-fill"></b-icon>
+                <b-icon v-else class="font-red" icon="heart"></b-icon>
                 </b-button>
             </div>
         </div>
     </b-col>
 </template>
 <script>
-import {toglgeHotPlaceLike} from "@/api/hotplace"
+import {toggleHotPlaceLike} from "@/api/hotplace"
 
 export default {
     name: 'HotPlaceListItem',
@@ -50,7 +51,7 @@ export default {
     unmounted() { },
     methods: {
         toggleHotplaceLike: function() {
-            toglgeHotPlaceLike(this.hotplace.hotPlaceId, (response)=>{
+            toggleHotPlaceLike(this.hotplace.hotPlaceId, (response)=>{
                 if(response.status === 200) {
                     this.isFill = !this.isFill;
                 }

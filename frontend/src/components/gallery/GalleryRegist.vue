@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <div class="header d-flex flex-column h-100">
+        <div class="header d-flex flex-column h-100 sticky-top">
             <div>
                 <h2 class="font-weight-bold mb-0 w-auto"> 핫플레이스 등록 </h2>
             </div>
@@ -19,6 +19,15 @@
             <b-form-input size="lg" placeholder="제목" class="mb-2" v-model="hotplaceForm.title"></b-form-input>
             <!-- 해시태그 -->
             <b-form-input size="lg" placeholder="#해시태그" class="mb-2" v-model="hotplaceForm.hashTag"></b-form-input>
+
+            <vue-tags-input class="mb-2"
+                v-model="tag"
+                :tags="tags"
+                @tags-changed="newTags => tags = newTags"
+                max-tags="1"
+                placeholder="#해시태그"
+            />
+
 
            <div class="d-flex justify-content-between mb-2">
                 <KaKaoMap :mapCss="mapStyle"/>
@@ -71,13 +80,18 @@ import { insertHotPlace } from "@/api/hotplace"
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { openDaumPost, getLatLng } from "@/util/daumPostUtil";
 
+import VueTagsInput from '@johmun/vue-tags-input';
+
 export default {
     name:'GalleryRegist',
     components:{
-        KaKaoMap
+        KaKaoMap,
+        VueTagsInput,
     },
     data() {
         return {
+            tag: '',
+            tags: [],
             mapStyle : {
                 'display': 'table',
                 'width': '49%',
@@ -101,7 +115,7 @@ export default {
                 value : null,
                 text: "장소 타입을 선택하세요.",
                 disabled: true
-            }
+            },
         }
     },
     setup() {},
@@ -127,7 +141,8 @@ export default {
             })
         }
     },
-    mounted() {},
+    mounted() {
+    },
     unmounted() {},
     methods:{
         moveGalleryList() { 
@@ -141,9 +156,6 @@ export default {
 
             insertHotPlace(this.getRequestFormData(), ()=>{
                 this.$router.push({ name: "GalleryList" }).catch(() => { });
-            }, (e)=>{
-                console.log(e);
-                alert("등록에 실패하였습니다. 관리자에게 문의하세요.")
             });
         },
         openAddressSearch() {
@@ -162,7 +174,7 @@ export default {
                 formData.append("image", img);
             })
             return formData;
-        }
+        },
     }
 }
 </script>
@@ -172,6 +184,19 @@ export default {
     padding: 20px 300px;
     margin-top: 60px;
     min-width: 1100px !important;
+}
+.vue-tags-input {
+    max-width: 100%;
+    height: calc(1.5em + 1rem + 2px);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+    /* font-weight: 400; */
+    /* color: #495057; */
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .board-section {
     padding: 20px 300px 1000px 300px;
