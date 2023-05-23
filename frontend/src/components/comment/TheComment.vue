@@ -14,9 +14,9 @@
             {{ comment.createdAt }}
           </p>
         </div>
-        <div class="d-flex">
+        <div class="d-flex" v-if="userInfo && userInfo.userId == comment.userId">
           <b-button variant="none" @click="deleteComment">
-            <b-icon class="mr-1 font-weight-bold font-red" icon="x-lg" ></b-icon>
+            <b-icon class="mr-1 font-weight-bold font-red" icon="x-lg"></b-icon>
           </b-button>
         </div>
       </div>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
     name: 'TheComment',
     props: {
@@ -41,10 +43,9 @@ export default {
         return {
         };
     },
-    setup() { },
-    created() { },
-    mounted() { },
-    unmounted() { },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
+    },
     methods: {
       deleteComment() {
           this.$emit('deleteComment', this.comment.commentId);

@@ -214,14 +214,18 @@ export default {
         }
     },
     setup() { },
-    created() { },
-    mounted() { },
+    created() { 
+        if (this.userInfo && this.userInfo.profileImgPath) { 
+            this.avatarSrc = 'http://localhost:8080/image/' + this.userInfo.profileImgPath;
+        }
+    },
     unmounted() { },
     methods: {
         ...mapActions("userStore", ["userConfirm"]),
         ...mapMutations("userStore", {'logout' : "LOGOUT"}),
         async confirm() {
             await this.userConfirm(this.signInForm);
+            this.$router.go(0);
         },
 
         changeMenu(e) {
@@ -259,6 +263,11 @@ export default {
                 alert("로그아웃 되었습니다.");
                 this.$router.push({path: '/'}).catch(() => { });
             } else {
+                this.$emit("menu-change", {
+                    value: "3",
+                    key: "nokey",
+                    text : "My Page",
+                });
                 this.$router.push({name:"MyPage"}).catch(()=>{});
             }
         },

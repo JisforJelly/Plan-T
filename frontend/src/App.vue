@@ -20,6 +20,30 @@ export default {
     TheNavBar,
     TheFooter,
   },
+  created() { 
+    const currnetMenuText = this.$route.path.split("/")[1];
+    if (currnetMenuText === "hotplace") {
+      this.currentMenu = {
+        value: 0,
+        text: "Hot-Place",
+      }
+    } else if (currnetMenuText === "board") {
+      this.currentMenu = {
+        value: 2,
+        text: "자유 게시판",
+      }
+    } else if (currnetMenuText === "trip") {
+      this.currentMenu = {
+        value: 1,
+        text: "Trip Plan",
+      }
+    } else { 
+      this.currentMenu = {
+        value: 3,
+        text: "My Page",
+      }
+    }
+  },
   data() {
     return {
       currentMenu: {
@@ -29,8 +53,7 @@ export default {
       headerVisible: true,
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     visibilityChanged(isVisible) { 
       this.headerVisible = isVisible;
@@ -40,7 +63,7 @@ export default {
       this.currentMenu.value = menu.value;
       this.currentMenu.mkey = menu.key;
       this.currentMenu.text = menu.text;
-    }
+    },
   }
 }
 </script>

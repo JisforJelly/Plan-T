@@ -5,8 +5,8 @@
             <div class="board-content d-flex align-items-center">
                 <div class="d-flex flex-grow-2 w-auto" style="padding: 0px 300px">
                     <b-button class="button mr-2" @click="moveHotPlaceList">목록</b-button>
-                    <b-button class="button mr-2" @click="moveHotPlaceModify">핫플레이스 수정</b-button>
-                    <b-button class="button btn-danger mr-2" @click="deleteHotPlace"> 삭제</b-button>
+                    <b-button v-if="userInfo && (userInfo.userId == hotplaceInfo.userId)" class="button mr-2" @click="moveHotPlaceModify">핫플레이스 수정</b-button>
+                    <b-button v-if="userInfo && (userInfo.userId == hotplaceInfo.userId)" class="button btn-danger mr-2" @click="deleteHotPlace"> 삭제</b-button>
                 </div>
             </div>
         </div>
@@ -75,16 +75,21 @@
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { setMarker } from "@/util/daumPostUtil"
 import { getHotPlace, deleteHotPlace, isUserLikeHotplace, toglgeHotPlaceLike } from "@/api/hotplace" 
+import { mapState } from "vuex";
 
 export default {
     name: 'GalleryDetail',
     components: {
         KaKaoMap
     },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
+    },
     data() {
         return {
             hotplaceInfo: {
                 hotPlaceId: -1,
+                userId: -1,
                 title: '핫플레이스 제목 구간',
                 like: 0,
                 userName: "김한성",
@@ -105,7 +110,8 @@ export default {
     },
     setup() { },
     created() {
-        getHotPlace(this.$route.params.no, (response)=>{
+        getHotPlace(this.$route.params.no, (response) => {
+            this.hotplaceInfo.userId = response.data.userId;
             this.hotplaceInfo.hotPlaceId = response.data.hotPlaceId;
             this.hotplaceInfo.title = response.data.title;
             this.hotplaceInfo.userName = response.data.userName;

@@ -69,6 +69,7 @@ public class PostDto {
     public static class PostDetail {
         private int postId;     // 글 id
         private int viewCnt;      // 조회 수
+        private int userId;
         private String name;     // 작성 유저
         private String title;   // 글 제목
         private String content; // 글 내용
@@ -78,6 +79,7 @@ public class PostDto {
         public static PostDetail from(Post post) {
         	return PostDetail.builder()
         			.postId(post.getPostId())
+        			.userId(post.getUser().getUserId())
         			.viewCnt(post.getViewCnt())
         			.name(post.getUser().getName())
         			.title(post.getTitle())
