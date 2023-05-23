@@ -8,4 +8,10 @@ public class AuthEmailDto {
 	public static class FindLoginIdRequest {
 		private String email;
 	}
+
+	@Data
+	public static class FindPasswordRequest {
+		private String email;
+		private String loginId;
+	}
 }

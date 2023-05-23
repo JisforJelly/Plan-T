@@ -2,8 +2,10 @@ package com.ssafy.enjoytrip.domain.user.service;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrip.domain.user.entity.User;
@@ -18,12 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthMailService {
 	
 	private final JavaMailSender javaMailSender;
-	private final UserRepository userReposiotry;
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	private static final String MAIL_SUBJECT = "[PLAN-T] 아이디/비밀번호 찾기 안내드립니다.";
 	private static final String MAIL_GREETING = "<h2> 안녕하세요. 여행 가이드 PLAN-T 입니다.</h2> <br>";
 	private static final String FIND_MAIL_HEADER = "아이디 찾기 결과 입니다.";
-	private static final String FIND_PASSWORD_HEADER = "비밀번호 변경을 해주세요.";
+	private static final String FIND_PASSWORD_HEADER = "임시 비밀번호 입니다.";
 	
 	public boolean sendLoginId(String email) {
 		String loginId = findLoginIdByEmail(email);
@@ -44,9 +47,30 @@ public class AuthMailService {
 		}
 		return isExistUser;
 	}
-	
-	public void sendFindPasswordUrl(String email) {
-		
+
+	public boolean sendFindPasswordUrl(String loginId, String email) {
+		String tmpPassword = RandomStringUtils.random(16, true, true);
+		User user = userRepository.findByEmail(email);
+		boolean isExistUser = (user!=null);
+
+		if(isExistUser && user.getLoginId().equals(loginId)) {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			try {
+				user.updatePassword(passwordEncoder.encode(tmpPassword));
+				userRepository.save(user);
+
+				MimeMessageHelper mailHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+				mailHelper.setSubject(MAIL_SUBJECT);
+				mailHelper.setTo(email);
+				mailHelper.setText(this.makeMailBody(FIND_PASSWORD_HEADER, tmpPassword), true);
+				javaMailSender.send(mimeMessage);
+				return true;
+			} catch(Exception e) {
+				log.info(e.getMessage());
+				throw new RuntimeException("메일 전송에 실패했습니다.");
+			}
+		}
+		return false;
 	}
 	
 	private String makeBoxContent(String headerText, String content) {
@@ -70,9 +94,9 @@ public class AuthMailService {
 		sb.append("</body>");
 		return sb.toString();
 	}
-	
+
 	private String findLoginIdByEmail(String email) {
-		User user = userReposiotry.findByEmail(email);
+		User user = userRepository.findByEmail(email);
 		return user == null ? null : user.getLoginId();
 	}
 }

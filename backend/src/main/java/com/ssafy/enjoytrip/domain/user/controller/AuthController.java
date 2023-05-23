@@ -45,4 +45,10 @@ public class AuthController {
 		boolean isSuccess = mailService.sendLoginId(dto.getEmail());
 		return new ResponseEntity<>(isSuccess ? "이메일을 확인해주세요." : "존재하지 않는 회원입니다.", HttpStatus.OK);
 	}
+
+	@PostMapping("/find-password")
+	public ResponseEntity<String> findPassword(@RequestBody AuthEmailDto.FindPasswordRequest dto) {
+		boolean isSuccess = mailService.sendFindPasswordUrl(dto.getLoginId(), dto.getEmail());
+		return new ResponseEntity<>(isSuccess ? "이메일을 확인해주세요." : "존재하지 않는 회원입니다.", HttpStatus.OK);
+	}
 }

@@ -118,7 +118,7 @@
     </div>
 </template>
 <script>
-import { signUp, sendFindIdEmail } from "@/api/auth"
+import { signUp, sendFindIdEmail, sendFindPassword } from "@/api/auth"
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
@@ -141,7 +141,7 @@ export default {
                     mkey: "m-2",
                     value: 1,
                     text: "Trip Plan",
-                    routeName: "TripPlan",
+                    routeName: "PlanView",
                 },
                 {
                     mkey: "m-3",
@@ -249,12 +249,13 @@ export default {
         },
         confirmAuthModal() {
              if (this.findAuthIndex === 0) {
-                console.log("아이디 찾기 ");
                 sendFindIdEmail({email: this.findIdEmail}, (response)=>{
                     alert(response.data);
                 });
              } else {
-                console.log("TODO : 비밀 번호 찾기");
+                sendFindPassword(this.findPasswordForm, (response)=>{
+                    alert(response.data);
+                })
              }
         },
         userAction(idx) {
