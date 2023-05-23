@@ -149,7 +149,7 @@ export default {
     margin-top: 60px;
 }
 .content {
-    border:none;
+    border: 1px solid #ced4da;
 }
 .information {
      border-bottom: 1px solid #e3e7eb;

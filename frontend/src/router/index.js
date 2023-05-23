@@ -5,7 +5,6 @@ import GalleryPage from "@/views/GalleryPage";
 import GalleryList from "@/components/gallery/GalleryList";
 import GalleryRegist from "@/components/gallery/GalleryRegist";
 import GalleryDetail from "@/components/gallery/GalleryDetail";
-import GalleryModify from "@/components/gallery/GalleryModify";
 
 import TripPlan from "@/views/TripPlan";
 
@@ -15,8 +14,9 @@ import FreeBoardRegist from "@/components/board/FreeBoardRegist";
 import FreeBoardDetail from "@/components/board/FreeBoardDetail";
 import FreeBoardModify from "@/components/board/FreeBoardModify";
 
-import UserMyPage from "@/views/UserMyPage";
-import UserMainPage from "@/components/user/UserMainPage";
+import PlanView from "@/components/plan/PlanView"
+import PlanRegist from "@/components/plan/PlanRegist"
+import PlanDetail from "@/components/plan/PlanDetail"
 
 Vue.use(VueRouter);
 
@@ -45,11 +45,6 @@ const routes = [
         path: "detail/:no",
         name: "GalleryDetail",
         component: GalleryDetail,
-      },
-      {
-        path: "modify/:no",
-        name: "GalleryModify",
-        component: GalleryModify,
       },
     ],
   },
@@ -84,17 +79,27 @@ const routes = [
     path: "/trip",
     name: "TripPlan",
     component: TripPlan,
-  },
-  {
-    path: "/mypage",
-    name: "MyPage",
-    component: UserMyPage,
     children: [
       {
         path: "",
-        name: "UserMainPage",
-        component: UserMainPage,
+        name: "PlanView",
+        component: PlanView,
       },
+      {
+        path: "regist",
+        name: "PlanRegist",
+        component: PlanRegist,
+      },
+      {
+        path: "plan/:no",
+        name: "PlanDetail",
+        component: PlanDetail,
+      },
+      // {
+      //   path: "modify/plan/:no",
+      //   name: "PlanModify",
+      //   component: PlanModify,
+      // },
     ],
   },
 ];

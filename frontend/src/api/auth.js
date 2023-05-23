@@ -21,14 +21,4 @@ async function signIn(user, success) {
     });
 }
 
-async function sendFindIdEmail(dto, success) {
-  await api
-    .post(`/auth/find-id`, JSON.stringify(dto))
-    .then(success)
-    .catch((e) => {
-      alert("서버와 통신이 원할하지 않습니다. 관리자에게 문의하세요.");
-      console.log(e);
-    });
-}
-
-export { signUp, signIn, sendFindIdEmail };
+export { signUp, signIn };

@@ -1,5 +1,5 @@
 <template>
-    <div>여행계획</div>
+    <router-view></router-view>
 </template>
 <script>
 export default {
