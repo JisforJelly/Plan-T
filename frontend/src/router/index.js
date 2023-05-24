@@ -89,7 +89,7 @@ const routes = [
         component: PlanView,
       },
       {
-        path: "regist",
+        path: "regist/:no",
         name: "PlanRegist",
         component: PlanRegist,
       },
@@ -97,7 +97,8 @@ const routes = [
         path: "plan/:no",
         name: "PlanDetail",
         component: PlanDetail,
-      },
+      }]
+    },
       {
         path: "/mypage",
         name: "MyPage",
@@ -110,8 +111,6 @@ const routes = [
           },
         ],
       },
-    ],
-  },
 ];
 
 const router = new VueRouter({

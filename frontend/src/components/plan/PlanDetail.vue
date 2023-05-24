@@ -10,8 +10,9 @@
             <div class="d-flex w-100 justify-content-center">
                 <div class="d-flex mt-2">
                     <b-button class="btn mr-2" @click="movePlanList">목록</b-button>
-                    <b-button class="btn mr-2" @click="movePlanList">수정</b-button>
-                    <b-button class="btn btn-danger" @click="movePlanList">삭제</b-button>
+                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn mr-2" @click="movePlanEdit">수정</b-button>
+                    <b-button v-else class="btn btn-success mr-2" @click="movePlanEdit">이 플랜으로 시작하기</b-button>
+                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-danger" @click="deleteTripPlan">삭제</b-button>
                 </div>
             </div>
         </div>
@@ -57,7 +58,8 @@
 <script>
 import Tmap from '@/components/map/TMap.vue'
 import PlanEditItem from "@/components/plan/PlanEditItem.vue"
-import { getTripPlan } from "@/api/tripPlan"
+import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
+import { mapState } from "vuex";
 
 export default {
     name:'PlanDetail',
@@ -79,14 +81,17 @@ export default {
         };
     },
     created() {
+        console.log(this.userInfo)
         getTripPlan(this.$route.params.no, (response)=>{
-            console.log(response.data)
             this.lists = response.data.destinations;
             this.title = response.data.title;
             this.userId = response.data.userId;
             this.userName = response.data.userName;
-            this.tripPlandId = response.data.tripPlandId;
+            this.tripPlandId = this.$route.params.no;
         });
+    },
+    computed: {
+        ...mapState("userStore", ["userInfo"]),
     },
     mounted() {
     },
@@ -105,6 +110,15 @@ export default {
         },
         movePlanList() {
             this.$router.push({name: 'PlanView'});
+        },
+        deleteTripPlan() {
+            deleteTripPlan(this.tripPlandId, ()=>{
+                alert("삭제 되었습니다.")
+                this.$router.push({name: 'PlanView'}).catch(()=>{})
+            })
+        },
+        movePlanEdit() {
+            this.$router.push({name: 'PlanRegist', params:{no: this.tripPlandId} });
         }
     },
 };

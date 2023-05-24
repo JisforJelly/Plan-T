@@ -27,7 +27,7 @@
 
     <!-- Page Content Start -->
     <div class="map-container">
-        <Tmap :attractions="attractions" :lists="lists" @showAttrModal="showModal"></Tmap>
+        <Tmap :attractions="attractions" :lists="lists" :detailPath="lists" @showAttrModal="showModal"></Tmap>
         <div class="search-save">
             <div class="d-flex justify-content-between w-100">
                 <div class="d-flex search">
@@ -98,7 +98,7 @@ import Tmap from '@/components/map/TMap.vue'
 import PlanEditItem from "@/components/plan/PlanEditItem.vue"
 import { getSido, getGugun, getContent } from "@/api/meta"
 import { searchAttraction } from "@/api/public"
-import { insertTripPlan } from "@/api/tripPlan"
+import { insertTripPlan, getTripPlan } from "@/api/tripPlan"
 
 export default {
     name:'PlanRegist',
@@ -179,6 +179,23 @@ export default {
             });
             this.contentType.push({ value: null, text: '관광지 유형', disabled: true });
         });
+
+        if(this.$route.params.no !== -1) {
+            getTripPlan(this.$route.params.no, (response)=>{
+                console.log(response);
+                this.lists = response.data.destinations.map((attr)=>{
+                    const start = Date.parse(attr.startDate);
+                    const end = Date.parse(attr.endDate);
+                    console.log(start, end, end-start);
+                    return {
+                        ...attr,
+                        day : Math.floor(Math.abs((end-start) / (1000 * 60 * 60 * 24))),
+                    }
+                });
+                this.editForm.title = response.data.title;
+                this.editForm.startDate = response.data.destinations[0].startDate
+            });
+        }
     },
     mounted() {
     },

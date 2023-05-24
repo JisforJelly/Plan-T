@@ -44,7 +44,7 @@ export default {
       }
     }
     
-    this.isPlagRegistPage = (this.$route.path == '/trip/regist' || this.$route.path.includes('plan'));
+    this.isPlagRegistPage = (this.$route.path.includes('/trip/regist') || this.$route.path.includes('plan'));
   },
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
     }
   },
   updated() {
-    this.isPlagRegistPage = (this.$route.path == '/trip/regist' || this.$route.path.includes('plan'));
+    this.isPlagRegistPage = (this.$route.path.includes('/trip/regist') || this.$route.path.includes('plan'));
   },
   methods: {
     visibilityChanged(isVisible) { 

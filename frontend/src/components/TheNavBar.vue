@@ -30,7 +30,7 @@
 
                     <div class="mr-2" v-if="menu.value == 1">
                         <router-link class="btn btn-light rounded-pill text-truncate simple-text-style"
-                            :to="{ name: 'PlanRegist' }">
+                            :to="{ name: 'PlanRegist', params:{no:-1} }">
                             당신의 <span class="font-red">여행</span>을 계획하세요
                         </router-link>
                     </div>

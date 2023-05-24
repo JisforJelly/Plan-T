@@ -72,11 +72,10 @@ export default {
                         label: attraction.placeName,
                     })
                     
-                    if(isMutable) {
-                        marker.addListener("click", function() {
-                            self.$emit("showAttrModal", attraction, false);
-                        });
-                    }
+                    marker.addListener("click", function() {
+                        self.$emit("showAttrModal", attraction, isMutable);
+                    });
+
                     marker.setMap(this.map);
                     this.markers.push(marker);
                 })
