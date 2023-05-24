@@ -138,6 +138,7 @@ export default {
             currentModalContent: {},
             newTimeLineContent: "",
             editForm: {
+                tripPlanId: -1,
                 title: "",
                 startDate: "",
                 timeLines: [],
@@ -180,20 +181,21 @@ export default {
             this.contentType.push({ value: null, text: '관광지 유형', disabled: true });
         });
 
-        if(this.$route.params.no !== -1) {
+        if(this.$route.params.no != -1) {
             getTripPlan(this.$route.params.no, (response)=>{
-                console.log(response);
                 this.lists = response.data.destinations.map((attr)=>{
                     const start = Date.parse(attr.startDate);
                     const end = Date.parse(attr.endDate);
-                    console.log(start, end, end-start);
                     return {
                         ...attr,
                         day : Math.floor(Math.abs((end-start) / (1000 * 60 * 60 * 24))),
                     }
                 });
+                this.editForm.tripPlanId = this.$route.params.isNew ? -1 : this.$route.params.no;
                 this.editForm.title = response.data.title;
                 this.editForm.startDate = response.data.destinations[0].startDate
+
+                console.log(this.editForm.tripPlanId)
             });
         }
     },
