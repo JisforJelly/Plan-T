@@ -98,7 +98,8 @@ public class TripDto {
 		private Integer tripPlanTimeLineId;
 		private Integer order;
 		private String placeName;
-		private Coordinate coordinate;
+		private Double latitude;
+		private Double longitude;
 		private String location;
 		private String content;
 		private String imgPath;
@@ -111,7 +112,8 @@ public class TripDto {
 					.tripPlanTimeLineId(timeLine.getTripPlanTimeLineId())
 					.order(timeLine.getOrders())
 					.placeName(timeLine.getPlaceName())
-					.coordinate(Coordinate.from(timeLine))
+					.latitude(timeLine.getLatitude())
+					.longitude(timeLine.getLongitude())
 					.location(timeLine.getLocation())
 					.content(timeLine.getContent())
 					.imgPath(timeLine.getImgPath())
@@ -150,22 +152,6 @@ public class TripDto {
 					.imgPath(imgPath)
 					.startDate(sb.toString())
 					.title(tripPlan.getTitle())
-					.build();
-		}
-	}
-	
-	@Data
-	@Builder
-	private static class Coordinate {
-		private Integer order;
-		private Double latitude;
-		private Double longitude;
-		
-		public static Coordinate from(TripPlanTimeLine timeLine) {
-			return Coordinate.builder()
-					.order(timeLine.getOrders())
-					.latitude(timeLine.getLatitude())
-					.longitude(timeLine.getLongitude())
 					.build();
 		}
 	}
