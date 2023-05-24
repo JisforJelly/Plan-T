@@ -47,10 +47,10 @@ public class TripController {
 		tripPlanService.insertTripPlan(dto, authInfo.getUserId());
 		return ResponseEntity.ok().build();
 	}
-	
-	// TODO : 여행 계획 업데이트
+
 	@PostMapping("/{tripPlanId}")
 	public ResponseEntity<Void> updateTripPlan(@PathVariable Integer tripPlanId) {
+		
 		return ResponseEntity.ok().build();
 	}
 	

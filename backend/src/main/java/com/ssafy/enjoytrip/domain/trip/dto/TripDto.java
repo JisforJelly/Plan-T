@@ -17,6 +17,7 @@ public class TripDto {
 	
 	@Data
 	public static class EditTripPlan {
+		private Integer tripPlanId;
 		private String title;
 		private String startDate;
 		private List<EditTimeLineItem> timeLines;

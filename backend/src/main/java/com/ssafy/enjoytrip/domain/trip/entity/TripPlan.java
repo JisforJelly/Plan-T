@@ -54,4 +54,12 @@ public class TripPlan extends BaseEntity {
 	public void setTripPlanTimeLine(List<TripPlanTimeLine> tripPlanTimeLine) {
 		this.tripPlanTimeLine = tripPlanTimeLine;
 	}
+
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+
+	public void updateStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
 }

@@ -7,5 +7,5 @@ import com.ssafy.enjoytrip.domain.trip.entity.TripPlanTimeLine;
 
 @Repository
 public interface TripPlanTimeLineRepository extends JpaRepository<TripPlanTimeLine, Integer>{
-
+    void deleteAllByTripPlanTripPlanId(Integer tripPlanId);
 }
