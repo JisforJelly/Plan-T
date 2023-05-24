@@ -3,9 +3,9 @@
         <div class="header d-flex flex-column h-100 mt-5">
             <div class="board-content d-flex align-items-center">
                 <div class="d-flex flex-grow-2 w-auto" style="padding: 0px 300px">
-                    <b-button class="button mr-2" >목록</b-button>
+                    <b-button class="button mr-2" @click="moveListView">목록</b-button>
                     <b-button v-if="userInfo && (userInfo.userId == planDetail.userId)" class="button mr-2">계획 수정</b-button>
-                    <b-button v-if="userInfo && (userInfo.userId == planDetail.userId)" class="button btn-danger mr-2"> 삭제</b-button>
+                    <b-button v-if="userInfo && (userInfo.userId == planDetail.userId)" class="button btn-danger mr-2" @click="deleteAndMoveListView"> 삭제</b-button>
                 </div>
             </div>
         </div>
@@ -29,13 +29,12 @@
         </div>
         <!-- Content Area -->
         <div class="d-flex content-area w-100">
-            <TMap class="mr-5" :cssStyle="mapStyle"/>
-            <b-calendar block  class="calendar" :date-info-fn="dateClass"></b-calendar>
+            <TMap :cssStyle="mapStyle" :detailPath="this.planDetail.destinations"/>
         </div>
     </div>
 </template>
 <script>
-import { getTripPlan } from "@/api/tripPlan"
+import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
 import { mapState } from "vuex"; 
 import TMap from "@/components/map/TMap.vue"
 
@@ -49,7 +48,7 @@ export default {
             planDetail: {},
             isFill: false,
             mapStyle: {
-                width: '60%',
+                width: '100%',
                 height: '600px'
             }
         };
@@ -60,6 +59,7 @@ export default {
     created() {
         getTripPlan(this.$route.params.no, (resposne) => { 
             this.planDetail = resposne.data;
+            console.log(this.planDetail);
         })
     },
     mounted() {},
@@ -70,6 +70,15 @@ export default {
         return (day >= 10 && day <= 15 ? 'table-primary' : '') ||
         (day >= 20 && day <= 25 ? 'table-secondary' : '') ||
         (day >= 1 && day <= 4 ? 'table-info' : '')
+      },
+      moveListView(){
+          this.$router.push({name:"PlanView"});
+      },
+      deleteAndMoveListView() {
+          deleteTripPlan(this.$route.params.no, ()=>{
+              alert("삭제 되었습니다.");
+              this.$router.push({name:"PlanView"});
+          })
       }
     }
   }

@@ -67,9 +67,11 @@ public class TripPlanService {
 		return TripPlanDetail.from(tripPlanRepository.findById(tripPlanId).orElseThrow(IllegalArgumentException::new));
 	}
 	
-	public void togglerTripPlanLike() {}
+	public void toggleTripPlanLike() {}
 	
 	public void inviteTripPlan() {}
 	
-	public void deleteTripPlan() {}
+	public void deleteTripPlan(Integer planId) {
+		tripPlanRepository.deleteById(planId);
+	}
 }

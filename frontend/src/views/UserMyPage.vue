@@ -100,7 +100,6 @@ export default {
             formData.append("image", this.uploadImg);            
             updateUserProfile(formData, (response) => { 
                 alert("변경되었습니다.")
-                console.log(response.data);
                 this.changeInfo({
                     profileImgPath: response.data,
                     name : this.updateName

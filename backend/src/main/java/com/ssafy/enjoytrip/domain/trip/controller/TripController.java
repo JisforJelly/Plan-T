@@ -71,10 +71,10 @@ public class TripController {
 		
 		return ResponseEntity.ok().build();
 	}
-	
-	// TODO : 여행 계획 삭제
+
 	@DeleteMapping("/{tripPlanId}")
 	public ResponseEntity<Void> deleteTripPlan(@PathVariable Integer tripPlanId) {
+		tripPlanService.deleteTripPlan(tripPlanId);
 		return ResponseEntity.ok().build();
 	}
 }

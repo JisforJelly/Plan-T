@@ -18,6 +18,12 @@ export default {
                 }
             } 
         },
+        detailPath: {
+            type: Array,
+            default: ()=>{
+                return [];
+            }
+        },
     },
     data() {
         return { 
@@ -30,31 +36,22 @@ export default {
     },
     watch: {
         attractions(newValue) { 
-            this.renderMarkers(newValue);
+            this.renderMarkers(newValue, true);
         },
         lists(newValue) {
-            if(this.polyLine != null) {
-                this.polyLine.setMap(null);
-                this.drawInfoArr = [];
-            }
-
-            if(newValue.length > 1) {
-                this.mapBound = new window.Tmapv2.LatLngBounds();
-
-                for(let i in newValue) {
-                    let latlng = new window.Tmapv2.LatLng(newValue[i].latitude, newValue[i].longitude)
-                    this.mapBound.extend(latlng); 
-                    this.drawInfoArr.push(latlng);
-                }
-
-                this.polyLine = new window.Tmapv2.Polyline({
-                    path: this.drawInfoArr,
-                    strokeColor : "red",
-                    strokeWeight:6,
-                    strokeStyle:"solid",
-                    map: this.map
+            this.renderPath(newValue);
+        },
+        detailPath(newValue) {
+            if(newValue.length) {
+                const attractions = this.detailPath.map((path)=>{
+                    return {
+                        latitude: path.coordinate.latitude,
+                        longitude: path.coordinate.longitude,
+                        placeName: path.placeName
+                    };
                 });
-                this.map.fitBounds(this.mapBound);
+                this.renderMarkers(attractions, false);
+                this.renderPath(attractions);
             }
         }
     },
@@ -71,7 +68,7 @@ export default {
     },
     unmounted() {},
     methods: {
-        renderMarkers(attractions) { 
+        renderMarkers(attractions, isMutable) { 
             this.removeMarkers();
             const self = this;
             if (attractions) {
@@ -81,10 +78,12 @@ export default {
                         position: new window.Tmapv2.LatLng(attraction.latitude, attraction.longitude),
                         label: attraction.placeName,
                     })
-
-                    marker.addListener("click", function() {
-                        self.$emit("showAttrModal", attraction, false);
-                    });
+                    
+                    if(isMutable) {
+                        marker.addListener("click", function() {
+                            self.$emit("showAttrModal", attraction, false);
+                        });
+                    }
                     marker.setMap(this.map);
                     this.markers.push(marker);
                 })
@@ -96,8 +95,29 @@ export default {
             });
             this.markers = [];
         },
-        renderOptimazationPath() {
+        renderPath(paths) {
+            if(this.polyLine != null) {
+                this.polyLine.setMap(null);
+                this.drawInfoArr = [];
+            }
 
+            if(paths.length > 1) {
+                this.mapBound = new window.Tmapv2.LatLngBounds();
+
+                for(let i in paths) {
+                    let latlng = new window.Tmapv2.LatLng(paths[i].latitude, paths[i].longitude)
+                    this.mapBound.extend(latlng); 
+                    this.drawInfoArr.push(latlng);
+                }
+                this.polyLine = new window.Tmapv2.Polyline({
+                    path: this.drawInfoArr,
+                    strokeColor : "red",
+                    strokeWeight:6,
+                    strokeStyle:"solid",
+                    map: this.map
+                });
+                this.map.fitBounds(this.mapBound);
+            }
         }
     }
 }

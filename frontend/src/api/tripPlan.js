@@ -29,4 +29,9 @@ async function getTripPlan(id, success) {
     });
 }
 
-export { insertTripPlan, getTripPlans, getTripPlan };
+async function deleteTripPlan(id, success) {
+  await api.delete(`/trip/${id}`)
+    .then(success).catch(()=>{});
+}
+
+export { insertTripPlan, getTripPlans, getTripPlan, deleteTripPlan };
