@@ -14,9 +14,12 @@ import FreeBoardRegist from "@/components/board/FreeBoardRegist";
 import FreeBoardDetail from "@/components/board/FreeBoardDetail";
 import FreeBoardModify from "@/components/board/FreeBoardModify";
 
-import PlanView from "@/components/plan/PlanView"
-import PlanRegist from "@/components/plan/PlanRegist"
-import PlanDetail from "@/components/plan/PlanDetail"
+import PlanView from "@/components/plan/PlanView";
+import PlanRegist from "@/components/plan/PlanRegist";
+import PlanDetail from "@/components/plan/PlanDetail";
+
+import UserMyPage from "@/views/UserMyPage";
+import UserMainPage from "@/components/user/UserMainPage";
 
 Vue.use(VueRouter);
 
@@ -95,11 +98,18 @@ const routes = [
         name: "PlanDetail",
         component: PlanDetail,
       },
-      // {
-      //   path: "modify/plan/:no",
-      //   name: "PlanModify",
-      //   component: PlanModify,
-      // },
+      {
+        path: "/mypage",
+        name: "MyPage",
+        component: UserMyPage,
+        children: [
+          {
+            path: "",
+            name: "UserMainPage",
+            component: UserMainPage,
+          },
+        ],
+      },
     ],
   },
 ];

@@ -28,6 +28,13 @@
                         </router-link>
                     </div>
 
+                    <div class="mr-2" v-if="menu.value == 1">
+                        <router-link class="btn btn-light rounded-pill text-truncate simple-text-style"
+                            :to="{ name: 'PlanRegist' }">
+                            당신의 <span class="font-red">여행</span>을 계획하세요
+                        </router-link>
+                    </div>
+
                     <b-dropdown v-if="!isLogin" class="m-2" variant="outline-secondary" no-caret toggle-class="round-drop-down"
                         offset="-60">
                         <!-- dropdown -->
@@ -262,7 +269,7 @@ export default {
             if(idx == 0) {
                 this.logout();
                 alert("로그아웃 되었습니다.");
-                this.$router.push({path: '/'}).catch(() => { });
+                this.$router.push({name: 'GalleryList'}).catch(() => { });
             } else {
                 this.$emit("menu-change", {
                     value: "3",
