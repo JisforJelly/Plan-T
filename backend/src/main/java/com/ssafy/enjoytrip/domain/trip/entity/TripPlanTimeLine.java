@@ -32,7 +32,7 @@ public class TripPlanTimeLine extends BaseEntity {
 	private Integer tripPlanTimeLineId;
 	
 	@Column
-	private Integer order;
+	private Integer orders;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="tripPlanId")

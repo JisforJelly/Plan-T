@@ -74,8 +74,8 @@
 <script>
 import KaKaoMap from "@/components/map/KakaoMap.vue"
 import { setMarker } from "@/util/daumPostUtil"
-import { getHotPlace, deleteHotPlace, isUserLikeHotplace, toglgeHotPlaceLike } from "@/api/hotplace" 
-import { mapState } from "vuex";
+import { getHotPlace, deleteHotPlace, isUserLikeHotplace, toggleHotPlaceLike } from "@/api/hotplace" 
+import { mapState } from "vuex"; 
 
 export default {
     name: 'GalleryDetail',
@@ -90,12 +90,12 @@ export default {
             hotplaceInfo: {
                 hotPlaceId: -1,
                 userId: -1,
-                title: '핫플레이스 제목 구간',
+                title: '',
                 like: 0,
-                userName: "김한성",
-                createdAt: "2023-05-12",
-                location: "서울시 노원구 상계동 주공아파트",
-                content: "핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용핫플레이스 컨텐츠내용 핫플레이스 컨텐츠내용",
+                userName: "",
+                createdAt: "",
+                location: "",
+                content: "",
                 hashTag : "",
                 longitude : 0, 
                 latitude: 0,
@@ -143,7 +143,7 @@ export default {
             });
         },
         toggleLike() {
-            toglgeHotPlaceLike(this.hotplaceInfo.hotPlaceId, (response)=>{
+            toggleHotPlaceLike(this.hotplaceInfo.hotPlaceId, (response)=>{
                 if(response.status === 200) {
                     this.isFill = !this.isFill;
                 }

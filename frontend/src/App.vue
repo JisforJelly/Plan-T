@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="m-0">
-    <TheHeader v-observe-visibility="(isVisible) => visibilityChanged(isVisible)"/>
-    <TheNavBar :is-fixed="!headerVisible" :menu="this.currentMenu" @menu-change="changeMenu"/>
+    <TheHeader v-if="!isPlagRegistPage" v-observe-visibility="(isVisible) => visibilityChanged(isVisible)"/>
+    <TheNavBar v-if="!isPlagRegistPage" :is-fixed="!headerVisible" :menu="this.currentMenu" @menu-change="changeMenu"/>
     <router-view></router-view>
-    <TheFooter/>
+    <TheFooter v-if="!isPlagRegistPage"/>
   </div>
 </template>
 
@@ -43,6 +43,7 @@ export default {
         text: "My Page",
       }
     }
+    this.isPlagRegistPage = (this.$route.path == '/trip/regist');
   },
   data() {
     return {
@@ -51,9 +52,12 @@ export default {
         text: "Hot-Place",
       },
       headerVisible: true,
+      isPlagRegistPage: false,
     }
   },
-  mounted() {},
+  updated() {
+    this.isPlagRegistPage = (this.$route.path == '/trip/regist');
+  },
   methods: {
     visibilityChanged(isVisible) { 
       this.headerVisible = isVisible;

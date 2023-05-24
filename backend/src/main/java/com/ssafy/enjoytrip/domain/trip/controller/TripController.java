@@ -1,13 +1,22 @@
 package com.ssafy.enjoytrip.domain.trip.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.enjoytrip.domain.trip.dto.TripDto.EditTripPlan;
+import com.ssafy.enjoytrip.domain.trip.dto.TripDto.TripPlanDetail;
+import com.ssafy.enjoytrip.domain.trip.dto.TripDto.TripPlanList;
+import com.ssafy.enjoytrip.domain.trip.service.TripPlanService;
 import com.ssafy.enjoytrip.domain.user.dto.UserDto.AuthInfo;
 import com.ssafy.enjoytrip.global.validation.TokenVallidator;
 
@@ -16,24 +25,26 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/trip")
 @RequiredArgsConstructor
-public class TripController {
-
-	// TODO : 여행 계획 조회 (페이지 네이션 필요)
+public class TripController {	
+	
+	private final TripPlanService tripPlanService;
+	
 	@GetMapping("")
-	public ResponseEntity<?> getTripPlans() {
-		return ResponseEntity.ok().build();
+	public ResponseEntity<TripPlanList> getTripPlans(@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
+		return new ResponseEntity<>(tripPlanService.getTripPlans(pageable), HttpStatus.OK);
 	}
 	
-	// TODO : 여행 계획 상세 조회
 	@GetMapping("/{tripPlanId}")
-	public ResponseEntity<?> getTripPlan(@PathVariable Integer tripPlanId) {
-		return ResponseEntity.ok().build();
+	public ResponseEntity<TripPlanDetail> getTripPlan(@PathVariable Integer tripPlanId) {
+		return new ResponseEntity<>(tripPlanService.getTripPlan(tripPlanId), HttpStatus.OK);
 	}
 	
-	// TODO : 여행 계획 등록
 	@PostMapping("")
 	public ResponseEntity<Void> insertTripPlan(
-			@TokenVallidator AuthInfo authinfo) {
+			@TokenVallidator AuthInfo authInfo,
+			@RequestBody EditTripPlan dto) {
+		
+		tripPlanService.insertTripPlan(dto, authInfo.getUserId());
 		return ResponseEntity.ok().build();
 	}
 	

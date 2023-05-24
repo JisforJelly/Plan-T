@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.domain.trip.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -40,6 +41,9 @@ public class TripPlan extends BaseEntity {
 	
 	@Column(name="title", length=64)
 	private String title;
+	
+	@Column(name="start_date")
+	private LocalDate startDate;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="tripPlan", cascade= {CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<TripPlanTimeLine> tripPlanTimeLine;

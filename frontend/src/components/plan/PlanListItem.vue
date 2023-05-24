@@ -2,17 +2,19 @@
     <!-- Plan Card Start -->
     <b-col lg="3" md="4" sm="12" class="mb-2 p-3 col-sm card-item">
         <b-card
-            :title="tripplan.title"
-            :img-src="tripplan.img"
+            :img-src="tripPlan.imgPath"
             img-alt="Image"
             img-top
+            img-height="200px"
+            img-width="100%"
             tag="article"
-            class="mb-2 b-card-item"
-        >
-            <b-card-text>
-                2023년 6월 4일 출발
-            </b-card-text>
-            <b-button @click="movePlanDetail" class="button">플랜 보기</b-button>
+            class="mb-2">
+            
+            <div class="d-flex flex-column">
+                <p class="font-weight-bold" style="font-size: 0.9rem">{{ tripPlan.title }}</p>
+                <b-card-text style="font-size: 0.8rem"> {{ tripPlan.startDate }} </b-card-text>
+                <b-button @click="movePlanDetail" class="button">플랜 보기</b-button>
+            </div>
         </b-card>
     </b-col>
     <!-- Plan Card End -->
@@ -22,7 +24,7 @@ export default {
     name:'PlanListItem',
     components:{},
     props: {
-        tripplan: {}
+        tripPlan: Object,
     },
     data() {
         return {
@@ -34,7 +36,7 @@ export default {
     unmounted() {},
     methods:{
        movePlanDetail() {
-            this.$router.push({ name: "PlanDetail", params: {'no': this.tripPlanId }}).catch(() => { });
+            this.$router.push({ name: "PlanDetail", params: {'no': this.tripPlan.tripPlanId }}).catch(() => { });
         },
     }
 }
@@ -45,11 +47,10 @@ export default {
     max-width: 20rem;
     margin-bottom: 20px;
 }
-.b-card-item {
-    height: 350px;
-}
 .button {
     border: none;
     background-color: lightblue;
+    color:black;
+    font-weight: bold;
 }
 </style>

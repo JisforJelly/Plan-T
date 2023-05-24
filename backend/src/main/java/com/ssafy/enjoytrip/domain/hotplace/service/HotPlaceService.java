@@ -87,7 +87,6 @@ public class HotPlaceService {
 	}
 	
 	public boolean isLike(int hotPlaceId, int userId) {
-		HotPlaceLike test = hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId);
 		return hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId) != null;
 	}
 
