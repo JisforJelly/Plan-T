@@ -1,106 +1,172 @@
 <template>
-    <div class="container-fluid p-0">
-        <div class="header d-flex flex-column h-100 mt-5">
-            <div class="board-content d-flex align-items-center">
-                <div class="d-flex flex-grow-2 w-auto" style="padding: 0px 300px">
-                    <b-button class="button mr-2" @click="moveListView">목록</b-button>
-                    <b-button v-if="userInfo && (userInfo.userId == planDetail.userId)" class="button mr-2">계획 수정</b-button>
-                    <b-button v-if="userInfo && (userInfo.userId == planDetail.userId)" class="button btn-danger mr-2" @click="deleteAndMoveListView"> 삭제</b-button>
+<div class="content-area d-flex">
+    <!-- Sidebar Start -->
+    <div class="sidebar bg-light border-right">
+        <div class="sidebar-heading shadow">
+            <div>
+                <img class="image" src="@/assets/plane.png" />
+                <span class="font-weight-bold ml-2"> {{ title }}</span>
+            </div>
+            <div class="d-flex w-100 justify-content-center">
+                <div class="d-flex mt-2">
+                    <b-button class="btn mr-2" @click="movePlanList">목록</b-button>
+                    <b-button class="btn mr-2" @click="movePlanList">수정</b-button>
+                    <b-button class="btn btn-danger" @click="movePlanList">삭제</b-button>
                 </div>
             </div>
         </div>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+    </div>  
+    <!-- Sidebar End -->
 
-        <div class="title-section d-flex flex-column">
-            <div class="title d-flex mt-3 font-weight-bold"> {{ planDetail.title }}</div>
-            <div class="d-flex align-items-center mt-1">
-                <div class="mr-3">
-                    <b-button class="p-0" variant="none">
-                        <b-icon v-if="isFill" class="mr-1 font-weight-bold font-red" icon="heart-fill" aria-hidden="true"></b-icon>
-                        <b-icon v-else class="mr-1 font-weight-bold font-red" icon="heart" aria-hidden="true"></b-icon>
-                    </b-button>
-                    <span class="like font-weight-bold pt-1">0 </span>
-                </div>
-                <p class="writer m-0">작성자 :
-                    <span class="name font-weight-bold pt-1">
-                    {{ planDetail.userName }}
-                    </span>
-                </p>
-            </div>
-        </div>
-        <!-- Content Area -->
-        <div class="d-flex content-area w-100">
-            <TMap :cssStyle="mapStyle" :detailPath="this.planDetail.destinations"/>
+    <!-- Page Content Start -->
+    <div class="map-container">
+        <Tmap :lists="lists" :detailPath="lists" @showAttrModal="showModal"></Tmap>
+        <div class="search-save">
+
         </div>
     </div>
+    <!-- Page Content End -->
+    <b-modal style="width: 120px" 
+        ref="add-modal"
+        centered 
+        hide-footer
+        class="h-50 d-inline-block min-vw-100">
+        <template #modal-title>
+            <code> {{ currentModalContent.placeName }}</code>
+        </template>
+
+        <div class="d-flex flex-column w-100">
+            <div>
+                <b-img v-if="currentModalContent.imgPath" :src="currentModalContent.imgPath" fluid alt="Responsive image"></b-img>
+                <img v-else class="image" src="@/assets/noimg.jpg" style="width:100%; height: auto;"/>
+            </div>
+
+            <div class="mt-2">
+                <p class="font-weight-bold">{{ currentModalContent.location }} </p>
+                <b-textarea class="mt-2"
+                    v-model="newTimeLineContent"
+                    readonly>
+                </b-textarea>
+            </div>
+        </div>
+    </b-modal>
+</div>
 </template>
+
 <script>
-import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
-import { mapState } from "vuex"; 
-import TMap from "@/components/map/TMap.vue"
+import Tmap from '@/components/map/TMap.vue'
+import PlanEditItem from "@/components/plan/PlanEditItem.vue"
+import { getTripPlan } from "@/api/tripPlan"
 
 export default {
     name:'PlanDetail',
     components: {
-        TMap,
+        PlanEditItem,
+        Tmap,
     },
     data() {
         return {
-            planDetail: {},
-            isFill: false,
-            mapStyle: {
-                width: '100%',
-                height: '600px'
-            }
+            selectedDay: 1,
+            title: "",
+            tripPlandId: -1,
+            userId: -1,
+            userName: "",
+            lists: [],
+            attractions: [],
+            currentModalContent: {},
+            newTimeLineContent: "",
         };
     },
-    computed: {
-        ...mapState("userStore", ["userInfo"]),
-    },
     created() {
-        getTripPlan(this.$route.params.no, (resposne) => { 
-            this.planDetail = resposne.data;
-            console.log(this.planDetail);
-        })
+        getTripPlan(this.$route.params.no, (response)=>{
+            console.log(response.data)
+            this.lists = response.data.destinations;
+            this.title = response.data.title;
+            this.userId = response.data.userId;
+            this.userName = response.data.userName;
+            this.tripPlandId = response.data.tripPlandId;
+        });
     },
-    mounted() {},
+    mounted() {
+    },
     unmounted() {},
     methods: {
-      dateClass(ymd, date) {
-        const day = date.getDate()
-        return (day >= 10 && day <= 15 ? 'table-primary' : '') ||
-        (day >= 20 && day <= 25 ? 'table-secondary' : '') ||
-        (day >= 1 && day <= 4 ? 'table-info' : '')
-      },
-      moveListView(){
-          this.$router.push({name:"PlanView"});
-      },
-      deleteAndMoveListView() {
-          deleteTripPlan(this.$route.params.no, ()=>{
-              alert("삭제 되었습니다.");
-              this.$router.push({name:"PlanView"});
-          })
-      }
-    }
-  }
+        showModal(attr, isEdit) { 
+            this.isEditMode = isEdit;
+            if (isEdit) { 
+                this.newTimeLineContent = attr.content;
+            }
+            this.currentModalContent = attr;
+            this.$refs['add-modal'].show();
+        },
+        cancelModal() { 
+            this.$refs['add-modal'].hide();
+        },
+        movePlanList() {
+            this.$router.push({name: 'PlanView'});
+        }
+    },
+};
 </script>
 
 <style scoped>
-.title-area {
-    padding: 40px;
-}
-.title {
-    font-size: 1.8rem;
+.image {
+    width: 30px;
 }
 .content-area {
-    padding: 0px 300px 2000px 300px;
+    height: 100vh;
 }
-.calendar {
-    width: 30%;
+.sidebar {
+    padding-top: 10px;
+    width: 320px;
 }
-
-.title-section {
-    padding: 20px 300px 20px 300px;
-    min-width: 1100px !important;
+.sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
 }
-
+.list-item {
+    height: 40px;
+    line-height: 40px; /* 글자 vertical 중앙 정렬 */
+    border: 1px solid #62aff6;
+    margin: 10px 30px;
+    border-radius: 5px;
+    background-color: #62aff6;
+    color: black;
+    font-weight: bold;
+}
+.datepicker {
+    margin-top: 10px;
+    font-size: 1.0rem;
+}
+.map-container {
+    float: center;
+    width: calc(100% - 280px);
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+}
+.image-map {
+    position: relative;
+}
+.search-save {
+    position: absolute; 
+    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.search {
+    float: left;
+    padding: 10px;
+    margin: 30px 0px 30px 10px;
+}
+.button {
+    color:white;
+    background-color: #62aff6;
+    border: 1px solid #62aff6;
+}
+.save-button {
+    margin-right: 50px;
+}
 </style>

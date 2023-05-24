@@ -43,15 +43,8 @@ export default {
         },
         detailPath(newValue) {
             if(newValue.length) {
-                const attractions = this.detailPath.map((path)=>{
-                    return {
-                        latitude: path.coordinate.latitude,
-                        longitude: path.coordinate.longitude,
-                        placeName: path.placeName
-                    };
-                });
-                this.renderMarkers(attractions, false);
-                this.renderPath(attractions);
+                this.renderMarkers(newValue, false);
+                this.renderPath(newValue);
             }
         }
     },

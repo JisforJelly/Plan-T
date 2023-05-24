@@ -1,15 +1,22 @@
 <template>
     <div class="d-flex w-100 ml-2">
-        <div>
+        <div v-if="isEdit">
             <div class="vertical-line"></div>
             <div class="day-selector" style="font-size: 0.8rem; font-weight: bold;" @click="editItems">
-                {{ item.day }}박 <b-icon icon="chevron-down" scale="0.5"></b-icon>
+                <div>{{ item.day }}박 <b-icon icon="chevron-down" scale="0.5"></b-icon> </div>
             </div>
             <div class="vertical-line"></div>
         </div>
-        <div class="d-flex ml-2 mt-3 mr-2" style="font-size: 0.8rem; font-weight: bold;">
+        <div v-else class="profile-img" @click="editItems">
+            <b-avatar class="mt-2 profile-img" :src="item.imgPath"></b-avatar>
+        </div>
+        <div v-if="isEdit" class="d-flex ml-2 mt-3 mr-2" style="font-size: 0.8rem; font-weight: bold;">
             <p class="mr-2 one-line-text">{{ item.placeName }}</p> 
             <b-icon icon="x-circle-fill" scale="1" style="color:gray; margin-top: 3px; cursor:pointer;" @click="deleteEditItem"></b-icon>
+        </div>
+        <div v-else class="d-flex flex-column ml-2 mr-2" style="font-size: 0.8rem; font-weight: bold;">
+            <p align="left" class="mt-2 mb-0 one-line-text">{{ item.placeName }}</p> 
+            <p>{{item.startDate}} ~ {{item.endDate}}</p> 
         </div>
     </div>
 </template>
@@ -19,6 +26,12 @@ export default {
     components: {},
     props: {
         item: Object,
+        isEdit: {
+            type:Boolean,
+            default: ()=>{
+                return true;
+            }
+        }
     },
     data() {
         return {
@@ -75,5 +88,9 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.profile-img {
+    cursor: pointer;
 }
 </style>

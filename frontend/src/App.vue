@@ -46,9 +46,6 @@ export default {
     
     this.isPlagRegistPage = (this.$route.path == '/trip/regist' || this.$route.path.includes('plan'));
   },
-  mounted() {
-     this.isPlagRegistPage = (this.$route.path == '/trip/regist' || this.$route.path.includes('plan'));
-  },
   data() {
     return {
       currentMenu: {
@@ -60,7 +57,7 @@ export default {
     }
   },
   updated() {
-    this.isPlagRegistPage = (this.$route.path == '/trip/regist');
+    this.isPlagRegistPage = (this.$route.path == '/trip/regist' || this.$route.path.includes('plan'));
   },
   methods: {
     visibilityChanged(isVisible) { 
