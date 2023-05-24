@@ -2,11 +2,13 @@
     <div id="map"></div>
 </template>
 <script>
+
 export default {
     name:'TMap',
     components: {},
     props: {
         attractions: Array,
+        lists: Array,
         cssStyle: {
             type: Object,
             default: () => {
@@ -21,15 +23,44 @@ export default {
         return { 
             map: null,
             markers: [],
+            drawInfoArr: [],
+            polyLine: null,
+            mapBound: null,
         };
     },
     watch: {
         attractions(newValue) { 
             this.renderMarkers(newValue);
+        },
+        lists(newValue) {
+            if(this.polyLine != null) {
+                this.polyLine.setMap(null);
+                this.drawInfoArr = [];
+            }
+
+            if(newValue.length > 1) {
+                this.mapBound = new window.Tmapv2.LatLngBounds();
+
+                for(let i in newValue) {
+                    let latlng = new window.Tmapv2.LatLng(newValue[i].latitude, newValue[i].longitude)
+                    this.mapBound.extend(latlng); 
+                    this.drawInfoArr.push(latlng);
+                }
+
+                this.polyLine = new window.Tmapv2.Polyline({
+                    path: this.drawInfoArr,
+                    strokeColor : "red",
+                    strokeWeight:6,
+                    strokeStyle:"solid",
+                    map: this.map
+                });
+                this.map.fitBounds(this.mapBound);
+            }
         }
     },
     setup() {},
-    created() {},
+    created() {
+    },
     mounted() {
         this.map = new window.Tmapv2.Map("map", {
             center : new window.Tmapv2.LatLng(37.56520450, 126.98702028),
@@ -42,7 +73,6 @@ export default {
     methods: {
         renderMarkers(attractions) { 
             this.removeMarkers();
-
             const self = this;
             if (attractions) {
                 this.map.setCenter(new window.Tmapv2.LatLng(attractions[0].latitude, attractions[0].longitude));
@@ -66,6 +96,9 @@ export default {
             });
             this.markers = [];
         },
+        renderOptimazationPath() {
+
+        }
     }
 }
 

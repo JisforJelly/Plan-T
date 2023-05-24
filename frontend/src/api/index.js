@@ -7,6 +7,7 @@ function apiInstance() {
     baseURL: process.env.VUE_APP_API_BASE_URL,
     headers: {
       "Content-Type": "application/json;charset=utf-8",
+      "appKey": "Ui71N3fk9Y6Yx6OPdc8IX2ObPAvU4lzK63Z7Jn6o",
     },
   });
 

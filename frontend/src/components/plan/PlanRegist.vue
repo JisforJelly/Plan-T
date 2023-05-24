@@ -5,7 +5,7 @@
         <div class="sidebar-heading shadow">
             <div>
                 <img class="image" src="@/assets/plane.png" />
-                <span class="font-weight-bold ml-2">   나만의 플랜 만들기</span>
+                <span class="font-weight-bold ml-2"> 나만의 플랜 만들기</span>
             </div>
             <b-form-datepicker 
                 v-model="editForm.startDate"
@@ -27,8 +27,7 @@
 
     <!-- Page Content Start -->
     <div class="map-container">
-        <!-- 지도... -->
-        <Tmap :attractions="attractions" @showAttrModal="showModal"></Tmap>
+        <Tmap :attractions="attractions" :lists="lists" @showAttrModal="showModal"></Tmap>
         <div class="search-save">
             <div class="d-flex justify-content-between w-100">
                 <div class="d-flex search">
@@ -204,8 +203,9 @@ export default {
             }
 
             this.editForm.timeLines = this.lists;
-            insertTripPlan(this.editForm, (response) => { 
-                console.log(response.data);
+            insertTripPlan(this.editForm, () => { 
+                alert("등록에 성공했습니다.");
+                this.$router.push({name:"PlanView"}).catch(()=>{});
             })
         },
         searchAttr() { 
@@ -259,9 +259,9 @@ export default {
             if (this.isEditMode) {
                 this.deleteEditDto(timeLine);
             } 
-            this.lists.push(timeLine);
+            const newList = [...this.lists, timeLine];
+            this.lists = newList;
             this.$refs['add-modal'].hide();
-
             this.selectedDay = 1;
             this.newTimeLineContent = "";
         },
