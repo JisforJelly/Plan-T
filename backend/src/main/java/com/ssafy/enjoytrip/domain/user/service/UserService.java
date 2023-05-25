@@ -1,12 +1,14 @@
 package com.ssafy.enjoytrip.domain.user.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.domain.user.dto.UserDto;
+import com.ssafy.enjoytrip.domain.user.dto.UserDto.UserList;
 import com.ssafy.enjoytrip.domain.user.entity.User;
 import com.ssafy.enjoytrip.domain.user.entity.UserRole;
 import com.ssafy.enjoytrip.domain.user.repository.UserRepository;
@@ -27,7 +29,6 @@ public class UserService {
 		userRepository.findByLoginId(dto.getLoginId()).ifPresent((s)-> {
 			throw new BusinessException(ErrorInfo.EXIST_LOGIN_ID);
 			});
-		
 		
 		User user = User.builder()
 				.loginId(dto.getLoginId())
@@ -64,5 +65,12 @@ public class UserService {
 		}
 		
 		userRepository.save(user);
+	}
+	
+	@Transactional(readOnly=true)
+	public UserList getUserList(String searchParams) {
+		List<User> users = userRepository.findByEmailContains(searchParams);
+		users.addAll(userRepository.findByNameContains(searchParams));
+		return UserList.ofList(users);
 	}
 }

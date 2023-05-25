@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.domain.user.dto.UserDto.AuthInfo;
+import com.ssafy.enjoytrip.domain.user.dto.UserDto.UserList;
 import com.ssafy.enjoytrip.domain.user.service.UserService;
 import com.ssafy.enjoytrip.global.util.FileUploadUtil;
 import com.ssafy.enjoytrip.global.validation.TokenVallidator;
@@ -38,5 +40,10 @@ public class UserController {
 		}
 		userService.updateUserInfo(authInfo.getUserId(), imgPath, name);
 		return new ResponseEntity<>(imgPath, HttpStatus.OK);
+	}
+	
+	@GetMapping("")
+	public ResponseEntity<UserList> getUserList(@RequestParam String searchParams) {
+		return new ResponseEntity<>(userService.getUserList(searchParams), HttpStatus.OK);
 	}
 }
