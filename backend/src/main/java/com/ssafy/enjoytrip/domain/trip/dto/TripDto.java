@@ -66,6 +66,13 @@ public class TripDto {
     				tripPlans.getTotalPages(), 
     				tripPlans.isLast());
     	}
+    	
+    	public static TripPlanList ofList(List<TripPlan> tripPlans) {
+    		List<TripPlanListItem> items = tripPlans
+    				.stream().map(TripPlanListItem::from)
+    				.collect(Collectors.toList());
+    		return new TripPlanList(items, 0, 0, false);
+    	}
 	}
 	
 	@Data

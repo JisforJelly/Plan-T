@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.domain.trip.dto.TripDto.EditTripPlan;
@@ -33,6 +34,15 @@ public class TripController {
 	public ResponseEntity<TripPlanList> getTripPlans(@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
 		return new ResponseEntity<>(tripPlanService.getTripPlans(pageable), HttpStatus.OK);
 	}
+	
+	@GetMapping("/user")
+	public ResponseEntity<TripPlanList> getUserTripPlans(
+			@PageableDefault(sort = "createdAt", direction = Direction.ASC) Pageable pageable,
+			@TokenVallidator AuthInfo authInfo) {
+		
+		return new ResponseEntity<>(tripPlanService.getUserPlans(pageable, authInfo.getUserId()), HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/{tripPlanId}")
 	public ResponseEntity<TripPlanDetail> getTripPlan(@PathVariable Integer tripPlanId) {
@@ -63,13 +73,22 @@ public class TripController {
 		return ResponseEntity.ok().build();
 	}
 	
-	// TODO : 여행 계획 친구 초대(수정 권한 부여)
 	@PostMapping("/invite/{tripPlanId}")
 	public ResponseEntity<Void> inviteTripPlan(
 			@TokenVallidator AuthInfo authinfo,
-			@PathVariable Integer tripPlanId) {
+			@PathVariable Integer tripPlanId,
+			@RequestParam Integer userId) {
 		
+		tripPlanService.inviteTripPlan(tripPlanId, userId);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/authority")
+	public ResponseEntity<Boolean> hasEditAuth(
+			@TokenVallidator AuthInfo authinfo,
+			@RequestParam Integer tripPlanId) {
+		
+		return new ResponseEntity<>(tripPlanService.checkAuth(tripPlanId, authinfo.getUserId()), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{tripPlanId}")
