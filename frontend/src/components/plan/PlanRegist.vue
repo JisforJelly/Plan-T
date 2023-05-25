@@ -85,8 +85,8 @@
 
         <template #modal-footer>
             <button class="btn btn-sm m-1" @click="cancelModal">취소</button>
-            <button v-if="isEditMode" class="btn btn-primary btn-sm m-1" @click="addTimeLine">수정하기</button>
-            <button v-else class="btn btn-primary btn-sm m-1" @click="addTimeLine">추가하기</button>
+            <button v-if="isEditMode" class="btn btn-primary btn-sm m-1" @click="addTimeLine">추가하기</button>
+            <button v-else class="btn btn-primary btn-sm m-1" @click="addTimeLine">수정하기</button>
         </template>
     </b-modal>
 </div>
