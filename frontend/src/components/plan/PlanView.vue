@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid p-0">
         <!-- main content-->
-        <div class="main-content d-flex">
+        <div class="d-flex" :class="[isNotMyPage ? 'main-content' : '']">
             <b-row class="w-100">
                 <PlanListItem :tripPlan="tripPlan" v-for="tripPlan in tripPlans" :key="tripPlan.tripPlanId"></PlanListItem>
             </b-row>
@@ -11,10 +11,16 @@
 
 <script>
 import PlanListItem from "@/components/plan/PlanListItem.vue";
-import { getTripPlans } from "@/api/tripPlan"
+import { getTripPlans, getUserPlans } from "@/api/tripPlan"
 
 export default {
-    name:'PlanView',
+    name: 'PlanView',
+    props: {
+        isNotMyPage: {
+            default: true,
+            type: Boolean,
+        }
+    },
     components: {
         PlanListItem,
     },
@@ -24,9 +30,15 @@ export default {
         };
     },
     created() {
-        getTripPlans((response) => { 
-            this.tripPlans = response.data.tripPlans;
-        })
+        if (this.isNotMyPage) {
+            getTripPlans((response) => {
+                this.tripPlans = response.data.tripPlans;
+            })
+        } else { 
+            getUserPlans((response) => { 
+                this.tripPlans = response.data.tripPlans;
+            })
+        }
     },
     methods: {
         movePlanRegist() {
@@ -41,8 +53,5 @@ export default {
     padding: 0px 300px;
     margin-top:80px;
     padding-bottom: 200px;
-}
-.regist-button {
-    margin-top: 80px;
 }
 </style>

@@ -10,15 +10,15 @@
             <div class="d-flex  w-100 justify-content-center">
                 <div class="d-flex  w-100 mt-2">
                     <b-button class="btn mr-2" @click="movePlanList">목록</b-button>
-                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="movePlanEdit(false)">수정</b-button>
+                    <b-button v-if="auth" class="btn flex-grow-1" @click="movePlanEdit(false)">수정</b-button>
                     <b-button v-else class="btn btn flex-grow-1" @click="movePlanEdit(true)">이 플랜 시작하기</b-button>
-                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-danger flex-grow-1 ml-2" @click="deleteTripPlan">삭제</b-button>
+                    <b-button v-if="auth" class="btn btn-danger flex-grow-1 ml-2" @click="deleteTripPlan">삭제</b-button>
                 </div>
             </div>
         </div>
 
         <div class="d-flex w-100 align-items-center mt-3 mb-3 sidebar-heading">
-            <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="showInviteUserModal">친구 초대하기</b-button>
+            <b-button v-if="auth" class="btn flex-grow-1" @click="showInviteUserModal">친구 초대하기</b-button>
             <b-button v-else class="btn flex-grow-1">스크랩</b-button>
         </div>
         <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @modifyEditItem="showModal"/>
@@ -94,7 +94,7 @@
 import Tmap from '@/components/map/TMap.vue'
 import PlanEditItem from "@/components/plan/PlanEditItem.vue"
 import UserListItem from "@/components/user/UserListItem.vue"
-import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
+import { getTripPlan, deleteTripPlan, hasTripPlanAuth } from "@/api/tripPlan"
 import { searchUsers } from "@/api/user"
 import { mapState } from "vuex";
 
@@ -118,6 +118,7 @@ export default {
             currentModalContent: {},
             newTimeLineContent: "",
             searchUsers: [],
+            auth: false,
         };
     },
     created() {
@@ -128,6 +129,10 @@ export default {
             this.userName = response.data.userName;
             this.tripPlandId = this.$route.params.no;
         });
+
+        hasTripPlanAuth(this.$route.params.no, (response) => { 
+            this.auth = response.data;
+        })
     },
     computed: {
         ...mapState("userStore", ["userInfo"]),

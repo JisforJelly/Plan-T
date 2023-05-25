@@ -7,11 +7,14 @@
             <p align="left" class="ml-2 mt-0 mb-0" style="font-size: 1.2rem; font-weight: bold;"> {{ userInfo.email }}</p>
         </div>
         <div class="d-flex flex-grow-1 justify-content-end d-flex align-items-center">
-            <b-button class="btn-sm" style="height: 40px">초대하기</b-button>
+            <b-button class="btn-sm" style="height: 40px" @click="invite">초대하기</b-button>
         </div>
     </div>
 </template>
 <script>
+
+import { inviteTripPlan } from "@/api/tripPlan"
+
 export default {
     name:'UserListItem',
     components: {},
@@ -23,11 +26,16 @@ export default {
         };
     },
     created() {
-        console.log(this.userInfo);
     },
     mounted() {},
     unmounted() {},
     methods: {
+        invite() { 
+            console.log(this.$route.params.no);
+            inviteTripPlan(this.$route.params.no, this.userInfo.userId, () => { 
+                alert("초대되었습니다.");
+            });
+        }
     }
 }
 </script>

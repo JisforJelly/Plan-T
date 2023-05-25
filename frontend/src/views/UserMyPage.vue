@@ -41,14 +41,12 @@
                         <button class="mr-2 profile-btn padding-btn" @click="cancelProfileEdit">취소</button>
                     </div>
                 </b-tab>
-
                 <b-tab title="좋아요 (Hot Place)" :title-link-class="'tab-title-class'" style="padding: 0px 0px 500px 0px">
                     <HotPlaceList :isNotMyPage='false'/>
                 </b-tab>
-                <b-tab title="좋아요 (여행 계획)" :title-link-class="'tab-title-class'" style="padding: 0px 0px 500px 0px">
-                  <div class="d-flex" style="background-color: brown; height:2000px;">
-                            adfsdf
-                    </div>
+
+                <b-tab title="나의 여행 계획" :title-link-class="'tab-title-class'" style="padding: 0px 0px 500px 0px">
+                    <PlanView :isNotMyPage='false'/>
                 </b-tab>
             </b-tabs>
         </div>
@@ -57,12 +55,14 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 import HotPlaceList from "@/components/gallery/GalleryList.vue"
+import  PlanView from "@/components/plan/PlanView.vue"
 import { updateUserProfile } from "@/api/user"
 
 export default {
     name:'UserMyPage',
     components:{
         HotPlaceList,
+        PlanView,
     },
     data() {
         return {
