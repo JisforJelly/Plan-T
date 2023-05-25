@@ -3,17 +3,18 @@ package com.ssafy.enjoytrip.domain.hotplace.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto;
-import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlaceLike;
-import com.ssafy.enjoytrip.domain.hotplace.repository.HotPlaceLikeRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto;
 import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto.EditRequest;
 import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto.HotPlaceDetail;
 import com.ssafy.enjoytrip.domain.hotplace.dto.HotPlaceDto.HotPlaceListView;
 import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlace;
 import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlaceImage;
+import com.ssafy.enjoytrip.domain.hotplace.entity.HotPlaceLike;
+import com.ssafy.enjoytrip.domain.hotplace.repository.HotPlaceLikeRepository;
 import com.ssafy.enjoytrip.domain.hotplace.repository.HotPlaceRepository;
 import com.ssafy.enjoytrip.domain.user.repository.UserRepository;
 
@@ -27,6 +28,7 @@ public class HotPlaceService {
 	private final HotPlaceLikeRepository hotPlaceLikeRepository;
 	private final UserRepository userRepository;
 	
+	@Transactional
 	public void insertHotPlace(EditRequest dto, Integer userId) {
 		HotPlace hotPlace = HotPlace
 				.builder()
@@ -47,6 +49,7 @@ public class HotPlaceService {
 		hotPlaceRepository.save(hotPlace);
 	}
 	
+	@Transactional
 	public void updateHotPlace(EditRequest dto) {
 		HotPlace hotPlace = hotPlaceRepository
 				.findById(dto.getHotPlaceId())
@@ -61,22 +64,27 @@ public class HotPlaceService {
 		hotPlaceRepository.save(hotPlace);
 	}
 	
+	@Transactional
 	public void deleteHotPlace(Integer hotPlaceId) {
 		hotPlaceRepository.deleteById(hotPlaceId);
 	}
 	
+	@Transactional(readOnly=true)
 	public HotPlaceListView getHotPlaces(Pageable pageable) {
 		return HotPlaceListView.ofPage(hotPlaceRepository.findAll(pageable));
 	}
 	
+	@Transactional(readOnly=true)
 	public HotPlaceListView getUserLikeHotPlaces(Pageable pageable, Integer userId) {
 		return HotPlaceListView.ofPage(hotPlaceRepository.findByLikesUserUserId(pageable, userId));
 	}
 	
+	@Transactional(readOnly=true)
 	public HotPlaceDetail getHotPlaceDetail(int hotPlaceId) {
 		return HotPlaceDetail.from(hotPlaceRepository.findById(hotPlaceId).orElseThrow(IllegalArgumentException::new));
 	}
 
+	@Transactional
 	public void toggleHotPlaceLike(int hotPlaceId, int userId) {
 		HotPlaceLike hotPlaceLike = hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId);
 		if(hotPlaceLike == null) {
@@ -86,10 +94,12 @@ public class HotPlaceService {
 		}
 	}
 	
+	@Transactional(readOnly=true)
 	public boolean isLike(int hotPlaceId, int userId) {
 		return hotPlaceLikeRepository.findByHotplaceHotPlaceIdAndUserUserId(hotPlaceId, userId) != null;
 	}
 
+	@Transactional(readOnly=true)
 	public HotPlaceDto.UserLikeHotPlace getUserLikeHotPlaceId(int userId) {
 		return new HotPlaceDto.UserLikeHotPlace(hotPlaceLikeRepository.findByUserUserId(userId));
 	}

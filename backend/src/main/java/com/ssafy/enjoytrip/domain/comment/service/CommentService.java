@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.domain.comment.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.domain.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.domain.comment.dto.CommentDto.CommentListView;
@@ -21,6 +22,7 @@ public class CommentService {
 	private final PostRepository postRepository;
 	private final CommentRepository commentRepository;
 
+	@Transactional(readOnly=true)
 	public CommentListView findByPostId(Integer postId) {
 		List<Comment> comments = commentRepository
 				.findByPost(postRepository.findById(postId).orElseThrow(()->new IllegalArgumentException()));
@@ -28,6 +30,7 @@ public class CommentService {
 		return CommentListView.ofList(comments);
 	}
 
+	@Transactional
 	public void insertComment(CommentDto.EditRequest dto, Integer userId) {
 		Comment comment = Comment.builder()
 				.content(dto.getContent())
@@ -38,10 +41,12 @@ public class CommentService {
 		commentRepository.save(comment);
 	}
 	
+	@Transactional
 	public void deleteComment(Integer userId, Integer commentId) {
 		commentRepository.deleteById(commentId);
 	}
 	
+	@Transactional
 	public void updateComment(Integer userId, Integer commentId, CommentDto.EditRequest dto) {
 		Comment comment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException());
 		comment.updateContent(dto.getContent());
