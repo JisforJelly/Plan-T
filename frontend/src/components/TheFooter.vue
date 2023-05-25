@@ -1,12 +1,15 @@
 <template>
     <footer class="d-flex-column fixed-bottom w-100">
-        <div class="d-flex w-100 align-items-center justify-content-between footer-layer-1">
-            <div class="font-weight-bold">© 2023 SSAFY, 김한성 이정민</div>
-            <div class="font-weight-bold">9기 서울 12반</div>
+        <div class="d-flex w-100 align-items-center footer-layer-1">
+            <div style="min-width: 600px !important;">
+                <div class="font-weight-bold">
+                    <p class="mt-3" align="left"> © 2023 SSAFY, 김한성 이정민 [9기 서울 12반]</p>
+                </div>
+            </div>
         </div>
         <div class="d-flex w-100 align-items-center justify-content-between footer-layer-2">
-            <div>
-                본 사이트의 콘텐츠는 저작권법의 보호를 받는 바 무단 전재, 복사, 배포 등을 금합니다.
+            <div style="min-width: 600px !important;">
+                <p class="mt-3" align="left">본 사이트의 콘텐츠는 저작권법의 보호를 받는 바 무단 전재, 복사, 배포 등을 금합니다.</p>
             </div>
         </div>
     </footer>
