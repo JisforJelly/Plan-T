@@ -21,29 +21,7 @@ export default {
     TheFooter,
   },
   created() { 
-    const currnetMenuText = this.$route.path.split("/")[1];
-    if (currnetMenuText === "hotplace") {
-      this.currentMenu = {
-        value: 0,
-        text: "Hot-Place",
-      }
-    } else if (currnetMenuText === "board") {
-      this.currentMenu = {
-        value: 2,
-        text: "자유 게시판",
-      }
-    } else if (currnetMenuText === "trip") {
-      this.currentMenu = {
-        value: 1,
-        text: "Trip Plan",
-      }
-    } else { 
-      this.currentMenu = {
-        value: 3,
-        text: "My Page",
-      }
-    }
-    
+    this.checkPath();    
     this.isPlagRegistPage = (this.$route.path.includes('/trip/regist') || this.$route.path.includes('plan'));
   },
   data() {
@@ -69,6 +47,31 @@ export default {
       this.currentMenu.mkey = menu.key;
       this.currentMenu.text = menu.text;
     },
+
+    checkPath() {
+      const currnetMenuText = this.$route.path.split("/")[1];
+      if (currnetMenuText === "hotplace") {
+        this.currentMenu = {
+          value: 0,
+          text: "Hot-Place",
+        }
+      } else if (currnetMenuText === "board") {
+        this.currentMenu = {
+          value: 2,
+          text: "자유 게시판",
+        }
+      } else if (currnetMenuText === "trip") {
+        this.currentMenu = {
+          value: 1,
+          text: "Trip Plan",
+        }
+      } else { 
+        this.currentMenu = {
+          value: 3,
+          text: "My Page",
+        }
+      }
+    }
   }
 }
 </script>

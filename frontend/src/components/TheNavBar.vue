@@ -3,9 +3,9 @@
         <header>
             <div class="d-flex navbar-static-height">
                 <div class="d-flex h-100 align-items-center">
-                    <router-link :to="{name: 'GalleryList'}">
+                    <div @click="changeMenuByAsset()" style="cursor: pointer;">
                         <img class="logo" src="@/assets/EnjoyTrip-small.png" style="height: 80px;"/>
-                    </router-link>
+                    </div>
                 </div>
                 <div class="d-flex flex-grow-1 h-100 ml-2 align-items-center p-5">
                     <b-dropdown id="dropdown-header" :text="menu.text" class="m-2" variant="none" size="lg" dropright
@@ -242,6 +242,13 @@ export default {
             this.$emit("menu-change", this.menus[e.target.value]);
             router.onReady(() => {
                 router.push({ name: this.menus[e.target.value].routeName }).catch(() => { });
+            });
+        },
+        changeMenuByAsset() { 
+            this.$emit("menu-change", this.menus[0]);
+            const router = this.$router;
+            router.onReady(() => {
+                router.push({ name: this.menus[0].routeName }).catch(() => { });
             });
         },
         toggleModal() {
