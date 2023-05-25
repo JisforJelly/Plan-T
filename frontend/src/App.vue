@@ -21,7 +21,6 @@ export default {
     TheFooter,
   },
   created() { 
-    console.log(process.env.VUE_APP_API);
     this.checkPath();    
     this.isPlagRegistPage = (this.$route.path.includes('/trip/regist') || this.$route.path.includes('plan'));
   },
