@@ -1,9 +1,9 @@
 <template>
     <div class="container-fluid p-0">
         <div class="d-flex flex-column w-100">
-            <b-tabs pills class="d-flex flex-column px-300 mt-5" content-class="d-flex align-items-center mt-5">
+            <b-tabs pills class="d-flex flex-column px-300 mt-5" content-class="d-flex align-items-center mt-5" lazy>
                 <!-- ui test -->
-                <b-tab title="내프로필" active :title-link-class="'tab-title-class'">
+                <b-tab title="내프로필" active :title-link-class="'tab-title-class'" style="padding: 0px 0px 100px 0px">
                     <div>
                         <h4 class="font-weight-bold text-left">프로필 수정</h4>
                         <p class="text-left text-secondary mt-2" style="font-size: 0.8rem;">대표 프로필과 별명을 수정 하실 수 있습니다.</p>
@@ -13,7 +13,7 @@
                         <table class="w-100 text-left">
                             <tr>
                                 <th>프로필 사진</th>
-                                <td class="w-100">
+                                <td>
                                     <div class="d-flex flex-column"> 
                                         <b-avatar :src="prevImgPath" size="6rem"></b-avatar>
                                         <div class="d-flex flex-row mt-3">
@@ -41,15 +41,11 @@
                         <button class="mr-2 profile-btn padding-btn" @click="cancelProfileEdit">취소</button>
                     </div>
                 </b-tab>
-                <b-tab title="나의 여행 계획" :title-link-class="'tab-title-class'">
-                    <div class="d-flex" style="background-color: brown; height:2000px;">
-                            adfsdf
-                    </div>
-                </b-tab>
-                <b-tab title="좋아요 (Hot Place)" :title-link-class="'tab-title-class'">
+
+                <b-tab title="좋아요 (Hot Place)" :title-link-class="'tab-title-class'" style="padding: 0px 0px 500px 0px">
                     <HotPlaceList :isNotMyPage='false'/>
                 </b-tab>
-                <b-tab title="좋아요 (여행 계획)" :title-link-class="'tab-title-class'">
+                <b-tab title="좋아요 (여행 계획)" :title-link-class="'tab-title-class'" style="padding: 0px 0px 500px 0px">
                   <div class="d-flex" style="background-color: brown; height:2000px;">
                             adfsdf
                     </div>
@@ -114,7 +110,7 @@ export default {
 
 <style scoped>
     th {
-        width: 35%;
+        width: 200px;
         background: #dcdcdc;
         padding: 2vw;
         font-size: 0.8rem;
@@ -124,6 +120,7 @@ export default {
     }
 
     td {
+        widows: '100vw-200px';
         padding: 2vw;
     }
 

@@ -146,6 +146,11 @@ export default {
             toggleHotPlaceLike(this.hotplaceInfo.hotPlaceId, (response)=>{
                 if(response.status === 200) {
                     this.isFill = !this.isFill;
+                    if (this.isFill) {
+                        this.hotplaceInfo.like += 1;
+                    } else { 
+                        this.hotplaceInfo.like -= 1;
+                    }
                 }
             });
         }
