@@ -3,19 +3,22 @@ package com.ssafy.enjoytrip.domain.user.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.domain.user.controller.AuthEmailDto.FindLoginIdRequest;
+import com.ssafy.enjoytrip.domain.user.dto.AuthEmailDto;
 import com.ssafy.enjoytrip.domain.user.dto.UserDto;
+import com.ssafy.enjoytrip.domain.user.dto.AuthEmailDto.FindLoginIdRequest;
 import com.ssafy.enjoytrip.domain.user.service.AuthMailService;
 import com.ssafy.enjoytrip.domain.user.service.UserService;
 import com.ssafy.enjoytrip.global.util.TokenUtil;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")

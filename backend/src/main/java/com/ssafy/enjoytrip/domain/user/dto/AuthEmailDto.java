@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.domain.user.controller;
+package com.ssafy.enjoytrip.domain.user.dto;
 
 import lombok.Data;
 
