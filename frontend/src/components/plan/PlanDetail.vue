@@ -21,7 +21,7 @@
             <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="showInviteUserModal">친구 초대하기</b-button>
             <b-button v-else class="btn flex-grow-1">스크랩</b-button>
         </div>
-        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @modifyEditItem="showModal"/>
     </div>  
     <!-- Sidebar End -->
 
@@ -66,13 +66,14 @@
         <div class="d-flex flex-column w-100">
             <b-input-group class="border rounded">
                 <b-form-input 
+                    v-model="userSearchParams"
                     class="p-2"
                     type="search"
-                    placeholder="사용자 메일을 검색하세요"
+                    placeholder="사용자를 검색하세요."
                     style="border: 0px;"
                 ></b-form-input>
                 <b-input-group-append>
-                    <b-button>
+                    <b-button @click="searchUser">
                         <b-icon icon="search"></b-icon>
                     </b-button>
                 </b-input-group-append>
@@ -82,7 +83,7 @@
                 <p style="color:gray; font-size: 1.4rem;">검색된 사용자가 없습니다. </p>
             </div>
             <div v-else class="mt-2">
-                <UserListItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+                <UserListItem :userInfo="user" v-for="(user) in searchUsers" :key="user.userId"/>
             </div>
         </div>
     </b-modal>
@@ -94,6 +95,7 @@ import Tmap from '@/components/map/TMap.vue'
 import PlanEditItem from "@/components/plan/PlanEditItem.vue"
 import UserListItem from "@/components/user/UserListItem.vue"
 import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
+import { searchUsers } from "@/api/user"
 import { mapState } from "vuex";
 
 export default {
@@ -105,6 +107,7 @@ export default {
     },
     data() {
         return {
+            userSearchParams:"",
             selectedDay: 1,
             title: "",
             tripPlandId: -1,
@@ -158,6 +161,12 @@ export default {
         },
         showInviteUserModal() { 
             this.$refs['user-modal'].show();
+        },
+        searchUser() { 
+            searchUsers(this.userSearchParams, (response) => { 
+                this.searchUsers = response.data.users;
+
+            });
         }
     },
 };
