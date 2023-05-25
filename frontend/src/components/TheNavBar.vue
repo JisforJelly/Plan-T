@@ -3,7 +3,9 @@
         <header>
             <div class="d-flex navbar-static-height">
                 <div class="d-flex h-100 align-items-center">
-                    <img class="logo" src="@/assets/EnjoyTrip.png" />
+                    <router-link :to="{name: 'GalleryList'}">
+                        <img class="logo" src="@/assets/EnjoyTrip-small.png" style="height: 80px;"/>
+                    </router-link>
                 </div>
                 <div class="d-flex flex-grow-1 h-100 ml-2 align-items-center p-5">
                     <b-dropdown id="dropdown-header" :text="menu.text" class="m-2" variant="none" size="lg" dropright

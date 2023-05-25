@@ -43,17 +43,25 @@ public class TripPlanService {
 		LocalDate startDate = LocalDate.parse(dto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		TripPlan tripPlan = tripPlanRepository.findById(dto.getTripPlanId()).orElse(null);
 		if(tripPlan != null) {
+			tripPlan.updateTitle(dto.getTitle());
+			tripPlan.updateStartDate(LocalDate.parse(dto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			tripPlanTimeLineRepository.deleteAllByTripPlanTripPlanId(dto.getTripPlanId());
+		} else {
 			tripPlan = TripPlan.builder()
 					.title(dto.getTitle())
 					.startDate(startDate)
 					.user(userRepository.findById(userId).orElseThrow(IllegalArgumentException::new))
 					.build();
-		} else {
-			tripPlan.updateTitle(dto.getTitle());
-			tripPlan.updateStartDate(LocalDate.parse(dto.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-			tripPlanTimeLineRepository.deleteAllByTripPlanTripPlanId(dto.getTripPlanId());
 		}
 		
+		tripPlanRepository.save(tripPlan);
+		
+		System.out.println(tripPlan.getTripPlanId());
+		List<TripPlanTimeLine> tripPlanTimeLines = makeTripTimeLine(dto, startDate, tripPlan);
+		tripPlanTimeLineRepository.saveAll(tripPlanTimeLines);
+	}
+
+	private List<TripPlanTimeLine> makeTripTimeLine(EditTripPlan dto, LocalDate startDate, TripPlan tripPlan) {
 		List<TripPlanTimeLine> tripPlanTimeLine = new LinkedList<>();
 		List<EditTimeLineItem> timeLineDtos = dto.getTimeLines();
 		for(EditTimeLineItem plan: timeLineDtos) {
@@ -70,9 +78,7 @@ public class TripPlanService {
 					.imgPath(plan.getImgPath()) 
 					.build());
 		}
-		
-		tripPlan.setTripPlanTimeLine(tripPlanTimeLine);
-		tripPlanRepository.save(tripPlan);
+		return tripPlanTimeLine;
 	}
 
 	@Transactional(readOnly = true)
