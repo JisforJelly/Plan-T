@@ -63,9 +63,8 @@
                     상세 설명
                 </div>
                 <div class="d-flex justify-content-start content mt-1">
-                    <p class="text-left">
-                        {{ hotplaceInfo.content }}
-                    </p>
+                    <pre class="text-left content-text">{{ hotplaceInfo.content }}
+                    </pre>
                 </div>
             </div>
         </div>
@@ -189,5 +188,9 @@ img {
 }
 .location .desc {
     font-size: 1.3rem;
+}
+.content-text {
+    font: inherit;
+    white-space: pre-wrap;
 }
 </style>
