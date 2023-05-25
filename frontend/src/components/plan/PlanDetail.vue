@@ -19,7 +19,6 @@
 
         <div class="d-flex w-100 align-items-center mt-3 mb-3 sidebar-heading">
             <b-button v-if="auth" class="btn flex-grow-1" @click="showInviteUserModal">친구 초대하기</b-button>
-            <b-button v-else class="btn flex-grow-1">스크랩</b-button>
         </div>
         <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @modifyEditItem="showModal"/>
     </div>  
