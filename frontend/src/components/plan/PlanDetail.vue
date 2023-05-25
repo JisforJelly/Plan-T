@@ -7,15 +7,25 @@
                 <img class="image" src="@/assets/plane.png" />
                 <span class="font-weight-bold ml-2"> {{ title }}</span>
             </div>
-            <div class="d-flex w-100 justify-content-center">
-                <div class="d-flex mt-2">
+            <div class="d-flex  w-100 justify-content-center">
+                <div class="d-flex  w-100 mt-2">
                     <b-button class="btn mr-2" @click="movePlanList">목록</b-button>
-                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn mr-2" @click="movePlanEdit(false)">수정</b-button>
-                    <b-button v-else class="btn btn-success mr-2" @click="movePlanEdit(true)">이 플랜으로 시작하기</b-button>
-                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-danger" @click="deleteTripPlan">삭제</b-button>
+                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="movePlanEdit(false)">수정</b-button>
+                    <b-button v-else class="btn btn-success flex-grow-1" @click="movePlanEdit(true)">이 플랜 시작하기</b-button>
+                    <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-danger flex-grow-1 ml-2" @click="deleteTripPlan">삭제</b-button>
                 </div>
             </div>
         </div>
+
+        <div class="d-flex w-100 align-items-center mt-3 mb-3 sidebar-heading">
+            <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-success flex-grow-1">친구 초대하기</b-button>
+            <b-button v-else class="btn btn-danger flex-grow-1">스크랩</b-button>
+        </div>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+        <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
         <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
     </div>  
     <!-- Sidebar End -->
@@ -133,6 +143,8 @@ export default {
 .sidebar {
     padding-top: 10px;
     width: 320px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .sidebar-heading {
     padding: 0.875rem 1.25rem;
@@ -182,4 +194,19 @@ export default {
 .save-button {
     margin-right: 50px;
 }
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #62aff6;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .sidebar::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
 </style>
