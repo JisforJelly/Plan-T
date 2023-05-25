@@ -48,9 +48,6 @@ public class TripPlan extends BaseEntity {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="tripPlan", cascade= {CascadeType.REMOVE, CascadeType.PERSIST })
 	private List<TripPlanTimeLine> tripPlanTimeLine;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="tripPlan", cascade= {CascadeType.REMOVE })
-	private List<TripPlanLike> tripPlanLike;
-	
 	public void setTripPlanTimeLine(List<TripPlanTimeLine> tripPlanTimeLine) {
 		this.tripPlanTimeLine = tripPlanTimeLine;
 	}
