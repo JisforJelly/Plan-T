@@ -14,7 +14,7 @@
                     :key="image"> 
                     <template #img>
                             <img class="d-block img-fluid w-100"
-                                :src="'http://localhost:8080/image/'+image"
+                                :src="`${rootPath}/image/`+image"
                                 alt="image slot">
                     </template>
                 </b-carousel-slide>
@@ -39,7 +39,7 @@
     </b-col>
 </template>
 <script>
-import {toggleHotPlaceLike} from "@/api/hotplace"
+import { toggleHotPlaceLike } from "@/api/hotplace"
 
 export default {
     name: 'HotPlaceListItem',
@@ -65,7 +65,12 @@ export default {
                 }
             });
         }
-    }
+    },
+    computed: {
+        rootPath: function () { 
+            return process.env.VUE_APP_API;
+        }
+    },
 }
 </script>
 

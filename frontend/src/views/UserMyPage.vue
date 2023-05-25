@@ -73,13 +73,16 @@ export default {
     },
     setup() {},
     created() {
-        this.prevImgPath = (this.userInfo.profileImgPath == undefined) ? "" : 'http://localhost:8080/image/' + this.userInfo.profileImgPath;
+        this.prevImgPath = (this.userInfo.profileImgPath == undefined) ? "" : this.rootPath+`/image/` + this.userInfo.profileImgPath;
         this.updateName = this.userInfo.name;
     },
     mounted() {},
     unmounted() { },
     computed: {
         ...mapState("userStore", ["userInfo"]),
+        rootPath: function () { 
+            return process.env.VUE_APP_API;
+        },
     },
     methods: {
         ...mapMutations("userStore", {'changeInfo' : "CHNAGE_USER_IMAGE"}),

@@ -2,12 +2,13 @@ import axios from "axios";
 import store from "@/store";
 import router from "@/router";
 // local vue api axios instance
+
 function apiInstance() {
   const instance = axios.create({
-    baseURL: process.env.VUE_APP_API_BASE_URL,
+    baseURL: process.env.VUE_APP_API,
     headers: {
       "Content-Type": "application/json;charset=utf-8",
-      "appKey": "Ui71N3fk9Y6Yx6OPdc8IX2ObPAvU4lzK63Z7Jn6o",
+      appKey: "Ui71N3fk9Y6Yx6OPdc8IX2ObPAvU4lzK63Z7Jn6o",
     },
   });
 

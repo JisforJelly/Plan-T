@@ -216,16 +216,19 @@ export default {
     },
     computed: {
         ...mapState("userStore", ["userInfo", "isLogin"]),
+        rootPath: function () { 
+            return process.env.VUE_APP_API;
+        }
     },
     watch: {
         userInfo(newValue) { 
-            this.avatarSrc = (newValue == null) ? "" : 'http://localhost:8080/image/'+newValue.profileImgPath;
+            this.avatarSrc = (newValue == null) ? "" : this.rootPath+`/image/`+newValue.profileImgPath;
         }
     },
     setup() { },
     created() { 
         if (this.userInfo && this.userInfo.profileImgPath) { 
-            this.avatarSrc = 'http://localhost:8080/image/' + this.userInfo.profileImgPath;
+            this.avatarSrc = this.rootPath+`/image/` + this.userInfo.profileImgPath;
         }
     },
     unmounted() { },

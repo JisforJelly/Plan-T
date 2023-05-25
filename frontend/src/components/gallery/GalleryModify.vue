@@ -35,7 +35,7 @@
         <b-carousel :interval="0" controls indicators background="#ababab" class="rounded w-50">
           <b-carousel-slide v-for="image in hotplaceForm.imgPath" :key="image">
             <template #img>
-              <img class="d-block img-fluid w-100" :src="'http://localhost:8080/image/'+image" alt="image slot" />
+              <img class="d-block img-fluid w-100" :src="`${rootPath}/image/`+image" alt="image slot" />
             </template>
           </b-carousel-slide>
         </b-carousel>
@@ -161,6 +161,11 @@ export default {
         this.hotplaceForm.longitude = loc.longitude;
       });
     },
+  },
+  computed: {
+      rootPath: function () { 
+          return process.env.VUE_APP_API;
+      }
   },
 };
 </script>

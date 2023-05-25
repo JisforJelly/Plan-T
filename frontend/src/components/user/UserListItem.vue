@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex w-100 my-3 border rounded p-2">
         <div class="profile-img">
-            <b-avatar class="profile-img" :src="'http://localhost:8080/image/'+userInfo.imgPath"></b-avatar>
+            <b-avatar class="profile-img" :src="`${rootPath}/image/`+userInfo.imgPath"></b-avatar>
         </div>
         <div class="d-flex align-items-center">
             <p align="left" class="ml-2 mt-0 mb-0" style="font-size: 1.2rem; font-weight: bold;"> {{ userInfo.email }}</p>
@@ -23,9 +23,15 @@ export default {
     },
     data() {
         return {
+            
         };
     },
     created() {
+    },
+    computed: {
+        rootPath: function () { 
+            return process.env.VUE_APP_API;
+        }
     },
     mounted() {},
     unmounted() {},
