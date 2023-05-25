@@ -12,7 +12,9 @@
             class="mb-2">
             
             <div class="d-flex flex-column">
-                <p class="font-weight-bold" style="font-size: 1.2rem">{{ tripPlan.title }}</p>
+                <div class="item-title">
+                    <p class="font-weight-bold">{{ tripPlan.title }}</p>
+                </div>
                 <b-card-text style="font-size: 0.9rem"> {{ tripPlan.startDate }} </b-card-text>
                 <b-button @click="movePlanDetail" class="button">플랜 보기</b-button>
             </div>
@@ -53,5 +55,16 @@ export default {
     background-color: #62aff6;
     color:white;
     font-weight: bold;
+}
+
+.item-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1 (integer);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.2rem; 
+    white-space: no-wrap;
+    height: 60px;
 }
 </style>

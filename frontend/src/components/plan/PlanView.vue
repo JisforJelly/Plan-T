@@ -50,8 +50,7 @@ export default {
 
 <style scoped>
 .main-content {
-    padding: 0px 300px;
+    padding: 0px 300px 500px 300px;
     margin-top:80px;
-    padding-bottom: 200px;
 }
 </style>

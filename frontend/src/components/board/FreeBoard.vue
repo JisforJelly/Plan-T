@@ -134,7 +134,7 @@ export default {
     white-space: nowrap;
 }
 .board-section {
-    padding: 20px 300px;
+    padding: 20px 300px 100px 300px;
     margin-top:20px;
     min-width: 1100px !important;
 }

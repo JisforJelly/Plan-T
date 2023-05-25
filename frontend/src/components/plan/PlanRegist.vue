@@ -43,9 +43,9 @@
                             placeholder="지역을 검색하세요"
                             v-model="searchText"
                             ></b-form-input>
-                            <b-input-group-append>
+                            <b-input-group-append @click="searchAttr">
                                 <b-button class="button">
-                                    <b-icon icon="search" @click="searchAttr"></b-icon>
+                                    <b-icon icon="search"></b-icon>
                                 </b-button>
                             </b-input-group-append>
                         </b-input-group>
@@ -194,8 +194,6 @@ export default {
                 this.editForm.tripPlanId = this.$route.params.isNew ? -1 : this.$route.params.no;
                 this.editForm.title = response.data.title;
                 this.editForm.startDate = response.data.destinations[0].startDate
-
-                console.log(this.editForm.tripPlanId)
             });
         }
     },
@@ -235,6 +233,11 @@ export default {
                 this.searchText,
                 async (response) => {
                     const json = await response.json();
+
+                    if (!json.response.body.items) { 
+                        alert("검색된 결과가 없습니다.");
+                    }
+
                     this.attractions = json.response.body.items.item.map((attraction) => {
                         return {
                             tripPlanTimeLineId: -1,
@@ -309,7 +312,23 @@ export default {
 .sidebar {
     padding-top: 10px;
     width: 320px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #62aff6;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .sidebar::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
 .sidebar-heading {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;

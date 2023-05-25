@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="header d-flex flex-column h-100">
             <div>
-                <h2 class="font-weight-bold mb-0 w-auto"> QNA 등록 </h2>
+                <h2 class="font-weight-bold mb-0 w-auto"> 게시글 등록 </h2>
             </div>
             <div class="board-content d-flex align-items-center justify-content-between">
                 <div class="d-flex flex-grow-2 w-auto">
