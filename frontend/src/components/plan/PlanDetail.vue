@@ -11,15 +11,15 @@
                 <div class="d-flex  w-100 mt-2">
                     <b-button class="btn mr-2" @click="movePlanList">목록</b-button>
                     <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="movePlanEdit(false)">수정</b-button>
-                    <b-button v-else class="btn btn-success flex-grow-1" @click="movePlanEdit(true)">이 플랜 시작하기</b-button>
+                    <b-button v-else class="btn btn flex-grow-1" @click="movePlanEdit(true)">이 플랜 시작하기</b-button>
                     <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-danger flex-grow-1 ml-2" @click="deleteTripPlan">삭제</b-button>
                 </div>
             </div>
         </div>
 
         <div class="d-flex w-100 align-items-center mt-3 mb-3 sidebar-heading">
-            <b-button v-if="userInfo && userInfo.userId == userId" class="btn btn-success flex-grow-1">친구 초대하기</b-button>
-            <b-button v-else class="btn btn-danger flex-grow-1">스크랩</b-button>
+            <b-button v-if="userInfo && userInfo.userId == userId" class="btn flex-grow-1" @click="showInviteUserModal">친구 초대하기</b-button>
+            <b-button v-else class="btn flex-grow-1">스크랩</b-button>
         </div>
         <PlanEditItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
     </div>  
@@ -28,9 +28,6 @@
     <!-- Page Content Start -->
     <div class="map-container">
         <Tmap :lists="lists" :detailPath="lists" @showAttrModal="showModal"></Tmap>
-        <div class="search-save">
-
-        </div>
     </div>
     <!-- Page Content End -->
     <b-modal style="width: 120px" 
@@ -57,12 +54,45 @@
             </div>
         </div>
     </b-modal>
+
+    <b-modal style="width: 120px" 
+        ref="user-modal"
+        centered 
+        hide-footer
+        class="h-50 d-inline-block min-vw-100">
+        <template #modal-title>
+            <p class="p-0 font-weight-bold" style="margin-bottom: 0px;">사용자 초대</p>
+        </template>
+        <div class="d-flex flex-column w-100">
+            <b-input-group class="border rounded">
+                <b-form-input 
+                    class="p-2"
+                    type="search"
+                    placeholder="사용자 메일을 검색하세요"
+                    style="border: 0px;"
+                ></b-form-input>
+                <b-input-group-append>
+                    <b-button>
+                        <b-icon icon="search"></b-icon>
+                    </b-button>
+                </b-input-group-append>
+            </b-input-group>
+            <div v-if="searchUsers.length == 0" class="d-flex flex-column w-100 mt-5 mb-3 justify-content-center align-items-center">
+                <b-icon icon="exclamation-circle" class="mb-4" style="width: 100px; height: 100px; color:gray"></b-icon>
+                <p style="color:gray; font-size: 1.4rem;">검색된 사용자가 없습니다. </p>
+            </div>
+            <div v-else class="mt-2">
+                <UserListItem :isEdit='false' :item="item" v-for="(item, index) in lists" :key="index + 0" @deleteEditItem="deleteEditDto" @modifyEditItem="showModal"/>
+            </div>
+        </div>
+    </b-modal>
 </div>
 </template>
 
 <script>
 import Tmap from '@/components/map/TMap.vue'
 import PlanEditItem from "@/components/plan/PlanEditItem.vue"
+import UserListItem from "@/components/user/UserListItem.vue"
 import { getTripPlan, deleteTripPlan } from "@/api/tripPlan"
 import { mapState } from "vuex";
 
@@ -71,6 +101,7 @@ export default {
     components: {
         PlanEditItem,
         Tmap,
+        UserListItem,
     },
     data() {
         return {
@@ -83,6 +114,7 @@ export default {
             attractions: [],
             currentModalContent: {},
             newTimeLineContent: "",
+            searchUsers: [],
         };
     },
     created() {
@@ -123,6 +155,9 @@ export default {
         },
         movePlanEdit(isNew) {
             this.$router.push({name: 'PlanRegist', params:{no: this.tripPlandId, isNew: isNew} });
+        },
+        showInviteUserModal() { 
+            this.$refs['user-modal'].show();
         }
     },
 };
