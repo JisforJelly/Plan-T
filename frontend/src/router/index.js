@@ -49,6 +49,11 @@ const routes = [
         name: "GalleryDetail",
         component: GalleryDetail,
       },
+      {
+        path: "modify/hotplace/:no",
+        name: "GalleryModify",
+        component: GalleryModify,
+      },
     ],
   },
   {
